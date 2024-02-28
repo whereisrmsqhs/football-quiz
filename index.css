@@ -1,0 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  font-family: "GyeonggiTitleM", sans-serif;
+}
+
+@font-face {
+  font-family: "GyeonggiTitleM";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiTitleM.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.navbar {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+
+  background-color: #e0e0e0;
+}
+
+.navbar__logo {
+  font-size: larger;
+}
+
+.navbar__menu {
+  display: flex;
+  padding: 0;
+}
+
+.navbar__menu li {
+  padding: 10px;
+}
+
+.navbar__menu li:hover {
+  background-color: #a3a3a3;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.navbar__menu {
+  list-style: none;
+}
+
+.main {
+  background-color: bisque;
+  height: 92vh;
+}
+
+.main__content {
+  position: relative;
+  display: flex;
+  background-color: whitesmoke;
+  margin: 0 auto;
+  max-width: 800px;
+  height: 66vh;
+
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+}
+
+.main__content__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main__content__intro h1 {
+  font-size: 64px;
+  padding-bottom: 20px;
+}
+
+.main__content__intro div {
+  font-size: 20px;
+  padding-top: 10px;
+}
+
+.main__content__solve {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 13px 30px;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+
+  transition: all 0.15s;
+}
+
+.main__content__solve:hover {
+  background-color: white;
+  color: black;
+  box-shadow: 0 0 0 2px black;
+}
