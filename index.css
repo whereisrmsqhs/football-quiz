@@ -53,14 +53,45 @@ a {
 }
 
 .main {
+  position: relative;
   background-color: bisque;
   height: 92vh;
+}
+
+.main__moving-sentences {
+  position: absolute;
+}
+
+.main__moving-sentences > * {
+  position: absolute;
+  animation: move 8s 0s infinite linear;
+  opacity: 0;
+  color: #a3a3a3;
+  white-space: nowrap;
+}
+
+@keyframes move {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(calc(100vw - var(--span-width, 900px)));
+    opacity: 0;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
 }
 
 .main__content {
   position: relative;
   display: flex;
-  background-color: whitesmoke;
+  background-color: none;
   margin: 0 auto;
   max-width: 800px;
   height: 66vh;
