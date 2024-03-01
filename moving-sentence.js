@@ -38,7 +38,6 @@ span.forEach((item) => {
     maxSpanWidth + "px"
   );
 
-  // let randomHeight = Math.random() * 50;
   let randomHeight = judgeHeight();
   item.style.top = `${randomHeight}vh`;
   item.addEventListener("animationiteration", changeRandomNum);
