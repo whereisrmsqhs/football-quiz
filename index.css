@@ -26,7 +26,7 @@ a {
   align-items: center;
   padding: 15px 20px;
 
-  background-color: #e0e0e0;
+  background-color: bisque;
 }
 
 .navbar__logo {
@@ -50,6 +50,12 @@ a {
 
 .navbar__menu {
   list-style: none;
+}
+
+hr {
+  background-color: black;
+  height: 1px;
+  border: 0;
 }
 
 .main {
@@ -93,7 +99,6 @@ a {
   display: flex;
   background-color: none;
   margin: 0 auto;
-  max-width: 800px;
   height: 66vh;
 
   flex-direction: column;
@@ -109,6 +114,7 @@ a {
 }
 
 .main__content__intro h1 {
+  word-wrap: break-word;
   font-size: 5vw;
   padding-bottom: 20px;
 }
@@ -131,7 +137,7 @@ a {
 }
 
 .main__content__solve:hover {
-  background-color: white;
+  background-color: bisque;
   color: black;
   box-shadow: 0 0 0 2px black;
 }
