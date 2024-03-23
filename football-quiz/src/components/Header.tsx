@@ -1,11 +1,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faGithub } from "@fortawesome/free-solid-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import {
+  faBars,
+  faFutbol,
+  faLandmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Header: React.FC = () => {
   return (
     <nav className="navbar">
       <div className="navbar__logo">
-        <i className="fa-regular fa-futbol"></i>
+        <FontAwesomeIcon icon={faFutbol as IconProp} />
         <a href="#!">축잘알 퀴즈</a>
       </div>
       <ul className="navbar__menu">
@@ -23,11 +29,11 @@ const Header: React.FC = () => {
         </li>
       </ul>
       <ul className="navbar__icon">
-        {/* <FontAwesomeIcon icon={faGithub} /> */}
-        <i className="fa-solid fa-landmark"></i>
+        <FontAwesomeIcon icon={faGithub as IconProp} />
+        <FontAwesomeIcon icon={faLandmark as IconProp} />
       </ul>
       <a href="#!" className="navbar__toggleBtn">
-        <i className="fa-solid fa-bars"></i>
+        <FontAwesomeIcon icon={faBars as IconProp} />
       </a>
     </nav>
   );
