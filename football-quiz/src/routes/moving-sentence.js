@@ -5,7 +5,7 @@ let maxSpanWidth = 0;
 let heightList = [];
 
 function changeRandomNum(event) {
-  randomHeight = judgeHeight();
+  const randomHeight = judgeHeight();
   event.target.style.top = `${randomHeight}vh`;
 }
 

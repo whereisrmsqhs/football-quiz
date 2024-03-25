@@ -1,6 +1,9 @@
-const Home = () => {
+import "../css/home.scss";
+import "./moving-sentence";
+
+const Home: React.FC = () => {
   return (
-    <main className="main">
+    <div className="main">
       <div className="main__moving-sentences">
         <span>너가 진짜 xxx팬이라고???</span>
         <span>이번 시즌 챔스 우승은 누가할것 같은데?</span>
@@ -21,7 +24,7 @@ const Home = () => {
         </div>
         <button className="main__content__solve">퀴즈풀기</button>
       </div>
-    </main>
+    </div>
   );
 };
 

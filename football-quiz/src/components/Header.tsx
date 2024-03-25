@@ -6,36 +6,48 @@ import {
   faFutbol,
   faLandmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import "../css/header.scss";
+import { useState } from "react";
 
 const Header: React.FC = () => {
+  const [toggleBtn, settoggleBtn] = useState(false);
+  const onToggleClick = () => {
+    settoggleBtn(!toggleBtn);
+  };
   return (
-    <nav className="navbar">
-      <div className="navbar__logo">
-        <FontAwesomeIcon icon={faFutbol as IconProp} />
-        <a href="#!">축잘알 퀴즈</a>
-      </div>
-      <ul className="navbar__menu">
-        <li>
-          <a href="/">메인</a>
-        </li>
-        <li>
-          <a href="/quizMain">퀴즈풀기</a>
-        </li>
-        <li>
-          <a href="/community">게시판</a>
-        </li>
-        <li>
-          <a href="/contanct">문의</a>
-        </li>
-      </ul>
-      <ul className="navbar__icon">
-        <FontAwesomeIcon icon={faGithub as IconProp} />
-        <FontAwesomeIcon icon={faLandmark as IconProp} />
-      </ul>
-      <a href="#!" className="navbar__toggleBtn">
-        <FontAwesomeIcon icon={faBars as IconProp} />
-      </a>
-    </nav>
+    <div>
+      <nav className="navbar">
+        <div className="navbar__logo">
+          <FontAwesomeIcon icon={faFutbol as IconProp} />
+          <Link to={"/"}>
+            <span>축잘알 퀴즈</span>
+          </Link>
+        </div>
+        <ul className={toggleBtn ? "navbar__menu active" : "navbar__menu"}>
+          <li>
+            <Link to={"/"}>메인</Link>
+          </li>
+          <li>
+            <Link to={"/quizMain"}>퀴즈풀기</Link>
+          </li>
+          <li>
+            <Link to={"/community"}>게시판</Link>
+          </li>
+          <li>
+            <Link to={"/contact"}>문의</Link>
+          </li>
+        </ul>
+        <ul className={toggleBtn ? "navbar__icon active" : "navbar__icon"}>
+          <FontAwesomeIcon icon={faGithub as IconProp} />
+          <FontAwesomeIcon icon={faLandmark as IconProp} />
+        </ul>
+        <a href="#!" className="navbar__toggleBtn" onClick={onToggleClick}>
+          <FontAwesomeIcon icon={faBars as IconProp} />
+        </a>
+      </nav>
+      <hr />
+    </div>
   );
 };
 
