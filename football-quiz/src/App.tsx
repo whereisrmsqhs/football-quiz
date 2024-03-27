@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Home from "./routes/Home";
 import Quiz from "./routes/Quiz";
 import Community from "./routes/Community";
+import Contact from "./routes/Contact";
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
         {/* <Route path=":id" element={<QuizSolve />} /> */}
         {/* </Route> */}
         <Route path="/community" element={<Community />}></Route>
+        <Route path="/contact" element={<Contact />}></Route>
       </Routes>
     </BrowserRouter>
   );
