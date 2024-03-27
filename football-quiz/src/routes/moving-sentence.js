@@ -10,7 +10,7 @@ function changeRandomNum(event) {
 }
 
 function judgeHeight() {
-  const tempHeight = Math.random() * 50;
+  let tempHeight = Math.random() * 50;
   if (heightList.length === 0) {
     heightList.push(tempHeight);
     return tempHeight;

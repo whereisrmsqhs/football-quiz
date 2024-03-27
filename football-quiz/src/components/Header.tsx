@@ -29,7 +29,7 @@ const Header: React.FC = () => {
             <Link to={"/"}>메인</Link>
           </li>
           <li>
-            <Link to={"/quizMain"}>퀴즈풀기</Link>
+            <Link to={"/quiz"}>퀴즈풀기</Link>
           </li>
           <li>
             <Link to={"/community"}>게시판</Link>

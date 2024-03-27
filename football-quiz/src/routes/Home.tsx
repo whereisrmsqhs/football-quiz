@@ -1,10 +1,13 @@
+import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import "../css/home.scss";
-import "./moving-sentence";
+// import "./moving-sentence";
 
 const Home: React.FC = () => {
+  const sentences = useRef<HTMLDivElement>(null);
   return (
     <div className="main">
-      <div className="main__moving-sentences">
+      <div className="main__moving-sentences" ref={sentences}>
         <span>너가 진짜 xxx팬이라고???</span>
         <span>이번 시즌 챔스 우승은 누가할것 같은데?</span>
         <span>작년 발롱도르 위너가 누구였음?</span>
@@ -22,7 +25,9 @@ const Home: React.FC = () => {
           <div>진짜로 축구를 잘아는지 축덕력 레이더!</div>
           <div>잔말말고 그냥 해봐!</div>
         </div>
-        <button className="main__content__solve">퀴즈풀기</button>
+        <Link to="/quiz">
+          <button className="main__content__solve">퀴즈풀기</button>
+        </Link>
       </div>
     </div>
   );
