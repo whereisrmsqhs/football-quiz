@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { useRef } from "react";
+import { Link, Outlet } from "react-router-dom";
 import "../css/home.scss";
 // import "./moving-sentence";
 
@@ -7,6 +7,7 @@ const Home: React.FC = () => {
   const sentences = useRef<HTMLDivElement>(null);
   return (
     <div className="main">
+      <Outlet />
       <div className="main__moving-sentences" ref={sentences}>
         <span>너가 진짜 xxx팬이라고???</span>
         <span>이번 시즌 챔스 우승은 누가할것 같은데?</span>

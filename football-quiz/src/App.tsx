@@ -5,6 +5,8 @@ import Home from "./routes/Home";
 import Quiz from "./routes/Quiz";
 import Community from "./routes/Community";
 import Contact from "./routes/Contact";
+import QuizSolve from "./routes/QuizSolve";
+import CreateQuiz from "./routes/CreateQuiz";
 
 const App: React.FC = () => {
   return (
@@ -13,8 +15,8 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/quiz" element={<Quiz />}></Route>
-        {/* <Route path=":id" element={<QuizSolve />} /> */}
-        {/* </Route> */}
+        <Route path="/quiz/:quizId" element={<QuizSolve />}></Route>
+        <Route path="/quiz/post" element={<CreateQuiz />}></Route>
         <Route path="/community" element={<Community />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
       </Routes>

@@ -1,5 +1,5 @@
 import emailjs from "@emailjs/browser";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 const Contact: React.FC = () => {
   const form = useRef<HTMLFormElement>(null);
