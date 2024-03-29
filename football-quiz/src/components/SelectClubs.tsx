@@ -1,16 +1,17 @@
 import { useState } from "react";
 
-type Regist = (club: string) => void;
+type Regist = (club: string, id: number) => void;
 
 interface Props {
   selectId: number;
   registClub: Regist;
 }
 
-const SelectClub: React.FC<Props> = ({ selectId }) => {
+const SelectClub: React.FC<Props> = ({ selectId, registClub }) => {
   const [team, setTeam] = useState<string>("");
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setTeam(event?.target.value);
+    registClub(event.target.value, selectId);
   };
   return (
     <div>

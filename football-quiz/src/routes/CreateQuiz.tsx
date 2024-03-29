@@ -1,8 +1,8 @@
 import { useState } from "react";
 import SelectClubsList from "../components/SelectClubsList";
 
-interface eachQuizInfo {
-  team: string[];
+export interface eachQuizInfo {
+  team: string;
   answer: string;
 }
 
@@ -12,9 +12,31 @@ const CreateQuiz: React.FC = () => {
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setType(e.target.value);
   };
+  const saveEachQuizInfo = (registedClub: string, answer: string) => {
+    setRegisted((registed) => {
+      const newInfo = {
+        team: registedClub,
+        answer: answer,
+      };
+      return [...registed, newInfo];
+    });
+  };
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    // 추후 검증 로직 필요.
+    const response = await fetch("http://localhost:3001/quiz/post", {
+      method: "POST",
+      body: JSON.stringify(registed, null, 2),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+  }
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="type">퀴즈 형식</label>
         <select name="quizType" id="type" value={type} onChange={handleSelect}>
           <option value="">퀴즈 형식을 선택해주세요.</option>
@@ -25,8 +47,7 @@ const CreateQuiz: React.FC = () => {
         {type === "type1" ? (
           <div>
             <h2>추가될 클럽 순서는 예전 ~ 최근 클럽 순으로 추가해주세요.</h2>
-            <SelectClubsList />
-            <button>문제 등록</button>
+            <SelectClubsList saveEachQuizInfo={saveEachQuizInfo} />
             {registed.map((quiz) => {
               return (
                 <div>
