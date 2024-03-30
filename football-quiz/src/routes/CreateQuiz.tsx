@@ -21,7 +21,9 @@ const CreateQuiz: React.FC = () => {
       return [...registed, newInfo];
     });
   };
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: React.MouseEvent<HTMLElement, MouseEvent>
+  ) {
     event.preventDefault();
     // 추후 검증 로직 필요.
     const response = await fetch("http://localhost:3001/quiz/post", {
@@ -36,7 +38,7 @@ const CreateQuiz: React.FC = () => {
   }
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <div>
         <label htmlFor="type">퀴즈 형식</label>
         <select name="quizType" id="type" value={type} onChange={handleSelect}>
           <option value="">퀴즈 형식을 선택해주세요.</option>
@@ -46,6 +48,10 @@ const CreateQuiz: React.FC = () => {
         <input type="submit" value="Submit" />
         {type === "type1" ? (
           <div>
+            <label>퀴즈 이름</label>
+            <input type="text" placeholder="제목을 적어주세요" />
+            <label>퀴즈 룰 설명</label>
+            <input type="text" placeholder="필요한 퀴즈 설명을 적어주세요" />
             <h2>추가될 클럽 순서는 예전 ~ 최근 클럽 순으로 추가해주세요.</h2>
             <SelectClubsList saveEachQuizInfo={saveEachQuizInfo} />
             {registed.map((quiz) => {
@@ -57,11 +63,15 @@ const CreateQuiz: React.FC = () => {
               );
             })}
             <br />
-            <button>문제집 등록!</button>
+            <form action="/upload" method="POST" encType="multipart/form-data">
+              <input type="file" name="userfile" />
+              <button type="submit">썸네일 사진 업로드</button>
+            </form>
+            <button onClick={handleSubmit}>문제집 등록!</button>
           </div>
         ) : null}
         {type === "type2" ? <div></div> : null}
-      </form>
+      </div>
     </div>
   );
 };
