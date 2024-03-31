@@ -38,7 +38,7 @@ const CreateQuiz: React.FC = () => {
   }
   return (
     <div>
-      <div>
+      <form action="/quiz/post" method="POST" encType="multipart/form-data">
         <label htmlFor="type">퀴즈 형식</label>
         <select name="quizType" id="type" value={type} onChange={handleSelect}>
           <option value="">퀴즈 형식을 선택해주세요.</option>
@@ -63,15 +63,13 @@ const CreateQuiz: React.FC = () => {
               );
             })}
             <br />
-            <form action="/upload" method="POST" encType="multipart/form-data">
-              <input type="file" name="userfile" />
-              <button type="submit">썸네일 사진 업로드</button>
-            </form>
+            <input type="file" name="userfile" />
+            <button type="submit">썸네일 사진 업로드</button>
             <button onClick={handleSubmit}>문제집 등록!</button>
           </div>
         ) : null}
         {type === "type2" ? <div></div> : null}
-      </div>
+      </form>
     </div>
   );
 };
