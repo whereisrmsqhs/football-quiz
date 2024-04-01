@@ -41,7 +41,7 @@ const CreateQuiz: React.FC = () => {
       body: formData,
     });
     const data = await response.json();
-    console.log(data);
+    alert("퀴즈 업로드 성공!");
   }
   return (
     <div>
