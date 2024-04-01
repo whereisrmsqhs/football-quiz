@@ -36,7 +36,6 @@ const CreateQuiz: React.FC = () => {
     formData.append("quiz_explain", explain.current?.value);
     formData.append("quiz_thumbnail", thumbnail.current?.files[0]);
     formData.append("quiz_info", JSON.stringify(registed));
-    console.log(formData.get("quiz_thumbnail"));
     const response = await fetch("http://localhost:3001/quiz/post", {
       method: "POST",
       body: formData,
