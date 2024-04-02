@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/quiz.scss";
 
+const img_url = "http://localhost:3001";
 interface QuizBlock {
   id: number;
   title: string;
@@ -33,10 +34,7 @@ const Quiz: React.FC = () => {
           {quizList?.map((quiz) => (
             <Link to={`/quiz/${quiz.id}`}>
               <div className="each_quiz_container">
-                <img
-                  src={`${process.env.PUBLIC_URL}/${quiz.thumbnail}`}
-                  alt="썸네일"
-                />
+                <img src={`${img_url}/${quiz.thumbnail}.jpeg`} alt="썸네일" />
                 <div className="each_quiz_title">{quiz.title}</div>
                 <div className="each_quiz_explain">{quiz.brief_explain}</div>
               </div>

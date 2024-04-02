@@ -4,8 +4,10 @@ const cors = require("cors");
 const multer = require("multer");
 const db = require("./mysql.js");
 const upload = multer({ dest: "uploads/" });
+const path = require("path");
 const app: Application = express();
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 const port: string | number = process.env.PORT || 3001;
 
 const corsOption = {
@@ -54,7 +56,36 @@ const posts = [
   },
 ];
 app.get("/quiz", (req: Request, res: Response) => {
-  res.send(quizBlock);
+  db.query(
+    `SELECT * from quiz_collection`,
+    function (error: any, quiz_collection: any) {
+      if (error) {
+        throw error;
+      }
+      const quiz_list: {
+        id: number;
+        title: string;
+        brief_explain: string;
+        thumbnail: string;
+      }[] = [];
+      quiz_collection.map(
+        (quiz: {
+          pk: number;
+          name: string;
+          quiz_rule: string;
+          thumbnail: string;
+        }) => {
+          quiz_list.push({
+            id: quiz.pk,
+            title: quiz.name,
+            brief_explain: quiz.quiz_rule,
+            thumbnail: quiz.thumbnail,
+          });
+        }
+      );
+      res.send(quiz_list);
+    }
+  );
 });
 
 app.get("/community", (req: Request, res: Response) => {
