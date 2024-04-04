@@ -22,10 +22,10 @@ app.use(bodyParser.json());
 const upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, "./src/uploads");
+      cb(null, "./uploads");
     },
     filename: function (req, file, cb) {
-      cb(null, new Date().valueOf() + "." + file.mimetype.split("/")[1]);
+      cb(null, new Date().valueOf() + "." + file.originalname.split(".")[1]);
     },
   }),
 });
@@ -44,6 +44,7 @@ const posts = [
     time: "2024-03-27, 14:23",
   },
 ];
+
 app.get("/quiz", (req, res) => {
   db.query(`SELECT * from quiz_collection`, function (error, quiz_collection) {
     if (error) {
@@ -67,7 +68,18 @@ app.get("/community", (req, res) => {
 });
 
 app.get("/quiz/:quizId", (req, res) => {
-  res.send("success");
+  const quizId = req.params.quizId;
+  db.query(
+    `SELECT * FROM quiz_collection WHERE pk=?`,
+    [quizId],
+    function (error, result) {
+      if (error) {
+        throw error;
+      }
+      console.log(result);
+      res.send(result.name);
+    }
+  );
 });
 
 app.post("/quiz/post", upload.single("quiz_thumbnail"), (req, res) => {
