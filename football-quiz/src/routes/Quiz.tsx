@@ -34,7 +34,7 @@ const Quiz: React.FC = () => {
           {quizList?.map((quiz) => (
             <Link to={`/quiz/${quiz.id}`}>
               <div className="each_quiz_container">
-                <img src={`${img_url}/${quiz.thumbnail}.jpeg`} alt="썸네일" />
+                <img src={`${img_url}/${quiz.thumbnail}`} alt="썸네일" />
                 <div className="each_quiz_title">{quiz.title}</div>
                 <div className="each_quiz_explain">{quiz.brief_explain}</div>
               </div>
