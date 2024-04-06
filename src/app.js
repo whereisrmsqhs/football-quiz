@@ -76,8 +76,7 @@ app.get("/quiz/:quizId", (req, res) => {
       if (error) {
         throw error;
       }
-      console.log(result);
-      res.send(result.name);
+      res.send(JSON.stringify(result[0]));
     }
   );
 });

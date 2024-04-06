@@ -1,16 +1,17 @@
-import { useParams } from "react-router-dom";
-import { useQuizId } from "./QuizSolve";
+import { useOutletContext, useParams } from "react-router-dom";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
+interface QuizIdType {
+  quizId: string;
+}
+
 const EachSolve: React.FC = () => {
-  const { quizId } = useQuizId();
+  const { quizId } = useOutletContext<QuizIdType>();
   const { quizOrder } = useParams();
-  const [loading, setLoading] = useState(false) as [
-    boolean,
-    Dispatch<SetStateAction<boolean>>
-  ];
-  const { order, setOrder } = useState(quizOrder);
-  const { eachInfo, setEachInfo } = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [order, setOrder] = useState(1);
+  const [eachInfo, setEachInfo] = useState([]);
+
   useEffect(() => {
     fetch(`http://localhost:3001/quiz/${quizId}/order/${order}`, {
       method: "GET",
@@ -19,6 +20,7 @@ const EachSolve: React.FC = () => {
       .then((response) => setEachInfo(response));
     setLoading(false);
   }, []);
+
   return <div>뭐여 {quizId}</div>;
 };
 

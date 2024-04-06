@@ -38,7 +38,7 @@ const QuizSolve: React.FC = () => {
           <h2>퀴즈 제목 : {quizInfo?.name}</h2>
           <article>{quizInfo?.quiz_rule}</article>
           {quizId !== undefined ? (
-            <Outlet context={{ quizId } satisfies QuizIdType} />
+            <Outlet context={{ quizId: quizId }} />
           ) : (
             <div>에러가 발생했습니다.</div>
           )}
@@ -47,9 +47,5 @@ const QuizSolve: React.FC = () => {
     </div>
   );
 };
-
-export function useQuizId() {
-  return useOutletContext<QuizIdType>();
-}
 
 export default QuizSolve;
