@@ -6,6 +6,7 @@ const db = require("./mysql.js");
 const path = require("path");
 const app = express();
 
+app.use(express.static("assets"));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 const port = process.env.PORT || 3001;
 
@@ -18,6 +19,8 @@ const corsOption = {
 app.use(cors(corsOption));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+let all_info = [];
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -123,6 +126,55 @@ app.post("/quiz/post", upload.single("quiz_thumbnail"), (req, res) => {
           console.error("Error executing queries:", error);
           res.status(500).send("Error executing queries");
         });
+    }
+  );
+});
+
+app.get("/quiz/:quizId/each/:order", (req, res) => {
+  const quizId = req.params.quizId;
+  const order = req.params.order;
+  db.query(
+    `SELECT * FROM quiz_collection WHERE pk=?`,
+    [quizId],
+    function (error, result) {
+      if (error) {
+        throw error;
+      }
+      if (order == 1) {
+        db.query(
+          `SELECT * FROM type1 WHERE quiz_collection_pk=?`,
+          [quizId],
+          function (error, result2) {
+            if (error) {
+              throw error;
+            }
+            all_info = JSON.stringify(result2);
+            const first_quiz = JSON.parse(all_info)[0];
+            const second_quiz = JSON.parse(all_info)[1];
+
+            const first_team = first_quiz.club_array.split(",");
+            const second_team = second_quiz.club_array.split(",");
+
+            const first_data = [
+              {
+                team: first_team,
+                answer: first_quiz.answer,
+              },
+              {
+                team: second_team,
+                answer: second_quiz.answer,
+              },
+            ];
+            console.log(second_team);
+            res.send(first_data);
+          }
+        );
+      } else {
+        const next_quizs = [
+          JSON.parse(all_info[order], JSON.parse(all_info[order + 1])),
+        ];
+        res.send(next_quizs);
+      }
     }
   );
 });

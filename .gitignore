@@ -1,3 +1,6 @@
 src/mysql.js
 
 src/uploads
+src/assets/*
+
+football-quiz/public/assets/*

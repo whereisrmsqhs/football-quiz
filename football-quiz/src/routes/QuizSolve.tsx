@@ -38,7 +38,7 @@ const QuizSolve: React.FC = () => {
           <h2>퀴즈 제목 : {quizInfo?.name}</h2>
           <article>{quizInfo?.quiz_rule}</article>
           {quizId !== undefined ? (
-            <Outlet context={{ quizId: quizId }} />
+            <Outlet context={{ quizId }} />
           ) : (
             <div>에러가 발생했습니다.</div>
           )}
