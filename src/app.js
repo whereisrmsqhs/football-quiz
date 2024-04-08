@@ -130,17 +130,18 @@ app.post("/quiz/post", upload.single("quiz_thumbnail"), (req, res) => {
   );
 });
 
-app.get("/quiz/:quizId/each/:order", (req, res) => {
+app.get("/quiz/:quizId/solve/:order", (req, res) => {
   const quizId = req.params.quizId;
-  const order = req.params.order;
-  db.query(
-    `SELECT * FROM quiz_collection WHERE pk=?`,
-    [quizId],
-    function (error, result) {
-      if (error) {
-        throw error;
-      }
-      if (order == 1) {
+  const order = parseInt(req.params.order);
+
+  if (order === 1) {
+    db.query(
+      `SELECT * FROM quiz_collection WHERE pk=?`,
+      [quizId],
+      function (error, result) {
+        if (error) {
+          throw error;
+        }
         db.query(
           `SELECT * FROM type1 WHERE quiz_collection_pk=?`,
           [quizId],
@@ -169,14 +170,25 @@ app.get("/quiz/:quizId/each/:order", (req, res) => {
             res.send(first_data);
           }
         );
-      } else {
-        const next_quizs = [
-          JSON.parse(all_info[order], JSON.parse(all_info[order + 1])),
-        ];
-        res.send(next_quizs);
       }
+    );
+  } else {
+    if (JSON.parse(all_info).length > order) {
+      const all_info_list = JSON.parse(all_info)[order];
+      const team_array = all_info_list.club_array.split(",");
+      const next_quiz_data = [
+        {
+          team: team_array,
+          answer: all_info_list.answer,
+        },
+      ];
+      console.log(next_quiz_data);
+      res.send(next_quiz_data);
+    } else {
+      console.log("last one");
+      res.send("last quiz");
     }
-  );
+  }
 });
 
 app.listen(port, function () {

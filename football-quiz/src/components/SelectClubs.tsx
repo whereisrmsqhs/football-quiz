@@ -22,6 +22,9 @@ const SelectClub: React.FC<Props> = ({ selectId, registClub }) => {
         <option value="Tottenham">토트넘</option>
         <option value="Chelsea">첼시</option>
         <option value="Manchester United">맨유</option>
+        <option value="Barcelona">바르셀로나</option>
+        <option value="ParisSaintGermain">PSG</option>
+        <option value="Miami">인터 마이애미</option>
       </select>
     </div>
   );

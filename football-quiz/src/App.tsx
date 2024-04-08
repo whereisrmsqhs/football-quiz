@@ -17,7 +17,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />}></Route>
         <Route path="/quiz" element={<Quiz />}></Route>
         <Route path="/quiz/:quizId" element={<QuizSolve />}>
-          <Route path="each/:order" element={<EachSolve />} />
+          <Route path="solve" element={<EachSolve />} />
         </Route>
         <Route path="/quiz/post" element={<CreateQuiz />}></Route>
         <Route path="/community" element={<Community />}></Route>
