@@ -165,7 +165,7 @@ app.get("/quiz/:quizId/each/:order", (req, res) => {
                 answer: second_quiz.answer,
               },
             ];
-            console.log(second_team);
+            console.log(first_data);
             res.send(first_data);
           }
         );
