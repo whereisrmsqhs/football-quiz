@@ -1,6 +1,7 @@
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { ChangeEvent, Key, useEffect, useState } from "react";
 import React from "react";
+import "../css/eachsolve.scss";
 
 interface QuizIdType {
   quizId: string;
@@ -52,7 +53,9 @@ const EachSolve: React.FC = () => {
     setFormSubmit(true);
   };
 
-  const handleNextQuizBtn = () => {
+  const handleNextQuiz = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     setEachInfo(eachInfo.slice(1));
     setUserAnswer("");
     setFormSubmit(false);
@@ -69,7 +72,11 @@ const EachSolve: React.FC = () => {
           {eachInfo[0].team &&
             eachInfo[0].team.map((each, index) => (
               <React.Fragment key={each}>
-                <img src={`${team_logo_path}/${each}.svg`} alt="team_logo" />
+                <img
+                  className="team_logo"
+                  src={`${team_logo_path}/${each}.svg`}
+                  alt="team_logo"
+                />
                 {index !== eachInfo[0].team.length - 1 && (
                   <img
                     src={process.env.PUBLIC_URL + "/assets/arrow.png"}
@@ -79,11 +86,11 @@ const EachSolve: React.FC = () => {
               </React.Fragment>
             ))}
           {formSubmit ? (
-            <div>
+            <form onSubmit={handleNextQuiz}>
               <div>{sendMessage}</div>
               <div>정답: {eachInfo[0].answer}</div>
-              <button onClick={handleNextQuizBtn}>다음</button>
-            </div>
+              <button>다음</button>
+            </form>
           ) : (
             <form onSubmit={checkUserAnswer}>
               <input
@@ -97,7 +104,12 @@ const EachSolve: React.FC = () => {
           )}
         </>
       ) : (
-        <div>에러! 팀정보가 없습니다.</div>
+        <div>
+          <div>퀴즈 끝! {currentPoint} 점!</div>
+          <Link to="/quiz">
+            <button>다른 문제 풀어보기</button>
+          </Link>
+        </div>
       )}
     </div>
   );

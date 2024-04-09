@@ -1,6 +1,6 @@
 import { response } from "express";
 import { useEffect, useState } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { Link, useOutletContext, useParams } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 
 type QuizIdType = { quizId: string | null };
@@ -37,6 +37,9 @@ const QuizSolve: React.FC = () => {
         <div>
           <h2>퀴즈 제목 : {quizInfo?.name}</h2>
           <article>{quizInfo?.quiz_rule}</article>
+          <Link to={`/quiz/${quizId}/solve`}>
+            <button>시작!</button>
+          </Link>
           {quizId !== undefined ? (
             <Outlet context={{ quizId }} />
           ) : (

@@ -89,9 +89,17 @@ app.post("/quiz/post", upload.single("quiz_thumbnail"), (req, res) => {
   const thumbnail = req.file;
   console.log(thumbnail);
   db.query(
-    `INSERT INTO quiz_collection (name, type, thumbnail, quiz_rule, user_id) 
-      VALUES (?, ?, ?, ?, ?);`,
-    [post.quiz_title, post.quiz_type, thumbnail?.path, post.quiz_explain, 2],
+    `INSERT INTO quiz_collection (name, type, thumbnail, quiz_rule, user_id, difficulty, recommends) 
+      VALUES (?, ?, ?, ?, ?, ?, ?);`,
+    [
+      post.quiz_title,
+      post.quiz_type,
+      thumbnail?.path,
+      post.quiz_explain,
+      2,
+      parseInt(post.difficulty),
+      0,
+    ],
     function (error, result) {
       if (error) {
         throw error;
