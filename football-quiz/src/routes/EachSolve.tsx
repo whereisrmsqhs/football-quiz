@@ -68,10 +68,10 @@ const EachSolve: React.FC = () => {
         <div>로딩중</div>
       ) : eachInfo.length > 0 ? (
         <>
-          <div>내 점수: {currentPoint} / 2</div>
+          <div>내 점수: {currentPoint} 점</div>
           {eachInfo[0].team &&
             eachInfo[0].team.map((each, index) => (
-              <React.Fragment key={each}>
+              <React.Fragment key={index}>
                 <img
                   className="team_logo"
                   src={`${team_logo_path}/${each}.svg`}

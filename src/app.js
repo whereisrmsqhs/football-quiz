@@ -79,7 +79,19 @@ app.get("/quiz/:quizId", (req, res) => {
       if (error) {
         throw error;
       }
-      res.send(JSON.stringify(result[0]));
+      db.query(
+        `SELECT * FROM type1 WHERE quiz_collection_pk=?`,
+        [quizId],
+        function (error, result2) {
+          if (error) {
+            throw error;
+          }
+          const total_quiz = result2.length;
+          result[0].total_quiz = total_quiz;
+
+          res.send(JSON.stringify(result[0]));
+        }
+      );
     }
   );
 });
@@ -151,7 +163,7 @@ app.get("/quiz/:quizId/solve/:order", (req, res) => {
           throw error;
         }
         db.query(
-          `SELECT * FROM type1 WHERE quiz_collection_pk=?`,
+          `SELECT * FROM type1 WHERE quiz_collection_pk=? ORDER BY RAND()`,
           [quizId],
           function (error, result2) {
             if (error) {
