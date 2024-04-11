@@ -4,34 +4,14 @@
   height: 92vh;
 }
 
+.box {
+  background: #fff;
+  width: 50vmin;
+  height: 50vmin;
+}
+
 .main__moving-sentences {
   position: absolute;
-}
-
-.main__moving-sentences > * {
-  position: absolute;
-  animation: move 8s 0s infinite linear;
-  opacity: 0;
-  color: #a3a3a3;
-  white-space: nowrap;
-}
-
-@keyframes move {
-  0% {
-    transform: translateX(0);
-    opacity: 0;
-  }
-  40% {
-    opacity: 1;
-  }
-  80% {
-    transform: translateX(calc(100vw - var(--span-width, 900px)));
-    opacity: 0;
-  }
-  100% {
-    transform: translate(0, 0);
-    opacity: 0;
-  }
 }
 
 .main__content {

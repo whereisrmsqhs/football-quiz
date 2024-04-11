@@ -2,6 +2,7 @@ import { response } from "express";
 import { useEffect, useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import "../css/quizsolve.scss";
 
 type QuizIdType = { quizId: string | null };
 
@@ -32,7 +33,7 @@ const QuizSolve: React.FC = () => {
     setLoading(false);
   }, [quizId]);
   return (
-    <div>
+    <div className="solve_container">
       <h1>퀴즈풀어보자</h1>
       {loading ? (
         <div>로딩중...</div>
