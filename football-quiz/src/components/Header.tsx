@@ -25,18 +25,18 @@ const Header: React.FC = () => {
           </Link>
         </div>
         <ul className={toggleBtn ? "navbar__menu active" : "navbar__menu"}>
-          <li>
-            <Link to={"/"}>메인</Link>
-          </li>
-          <li>
-            <Link to={"/quiz"}>퀴즈풀기</Link>
-          </li>
-          <li>
-            <Link to={"/community"}>게시판</Link>
-          </li>
-          <li>
-            <Link to={"/contact"}>문의</Link>
-          </li>
+          <Link to={"/"}>
+            <li>메인</li>
+          </Link>
+          <Link to={"/quiz"}>
+            <li>퀴즈풀기</li>
+          </Link>
+          <Link to={"/community"}>
+            <li>게시판</li>
+          </Link>
+          <Link to={"/contact"}>
+            <li>문의</li>
+          </Link>
         </ul>
         <ul className={toggleBtn ? "navbar__icon active" : "navbar__icon"}>
           <FontAwesomeIcon icon={faGithub as IconProp} />

@@ -19,7 +19,7 @@ const EachSolve: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState<number>(1);
   const [eachInfo, setEachInfo] = useState<EachInfoType[]>([]); // 서버로부터 받아오는 퀴즈 정보
-  const [userAnswer, setUserAnswer] = useState("");
+  const [userAnswer, setUserAnswer] = useState<string>("");
   const [currentPoint, setCurrentPoint] = useState(0);
   const [formSubmit, setFormSubmit] = useState(false);
   const [sendMessage, setSendMessage] = useState("");
@@ -43,23 +43,21 @@ const EachSolve: React.FC = () => {
   const checkUserAnswer = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (userAnswer == eachInfo[0].answer) {
-      setSendMessage("정답입니다!");
-      setCurrentPoint(currentPoint + 1);
+    if (formSubmit === false) {
+      if (userAnswer == eachInfo[0].answer) {
+        setSendMessage("정답입니다!");
+        setCurrentPoint(currentPoint + 1);
+      } else {
+        setSendMessage("틀렸습니다!");
+      }
+
+      setFormSubmit(true);
     } else {
-      setSendMessage("틀렸습니다!");
+      setEachInfo(eachInfo.slice(1));
+      setUserAnswer("");
+      setFormSubmit(false);
+      setOrder(order + 1);
     }
-
-    setFormSubmit(true);
-  };
-
-  const handleNextQuiz = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    setEachInfo(eachInfo.slice(1));
-    setUserAnswer("");
-    setFormSubmit(false);
-    setOrder(order + 1);
   };
 
   return (
@@ -85,23 +83,23 @@ const EachSolve: React.FC = () => {
                 )}
               </React.Fragment>
             ))}
+          <form onSubmit={checkUserAnswer}>
+            <input
+              value={userAnswer}
+              onChange={handleUserInput}
+              type="text"
+              placeholder="답안을 입력하세요"
+              readOnly={formSubmit ? true : false}
+              required
+            />
+            <button type="submit">제출</button>
+          </form>
           {formSubmit ? (
-            <form onSubmit={handleNextQuiz}>
-              <div>{sendMessage}</div>
+            <div>
+              {sendMessage}
               <div>정답: {eachInfo[0].answer}</div>
-              <button>다음</button>
-            </form>
-          ) : (
-            <form onSubmit={checkUserAnswer}>
-              <input
-                value={userAnswer}
-                onChange={handleUserInput}
-                type="text"
-                placeholder="답안을 입력하세요"
-              />
-              <button type="submit">제출</button>
-            </form>
-          )}
+            </div>
+          ) : null}
         </>
       ) : (
         <div>
