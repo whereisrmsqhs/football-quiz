@@ -8,9 +8,11 @@ a {
   position: relative;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 5px 15px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid #dadada;
 
-  background-color: bisque;
+  background-color: white;
 }
 
 .navbar__logo {
@@ -24,6 +26,7 @@ a {
 
 .navbar__menu li {
   padding: 10px;
+  font-weight: bold;
 }
 
 .navbar__menu li:hover {

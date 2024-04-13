@@ -68,41 +68,20 @@ const Home: React.FC = () => {
 
   return (
     <div className="main">
-      <div className="main__moving-sentences">
-        {/* {sentenceInfo.map(
-          (
-            sentence: { top: number; text: string; delay: number },
-            index: number
-          ) => (
-            <motion.div
-              style={{ position: "absolute" }}
-              key={index}
-              initial="start"
-              animate={{ x: window.innerWidth - 100, opacity: [0, 1, 0] }}
-              transition={{
-                duration: 5,
-                delay: 1,
-                repeat: 100,
-                ease: "easeOut",
-                repeatDelay: 1,
-                onComplete: () => {
-                  dispatch({ type: "UPDATE", index: index });
-                },
-              }}
-              variants={sentenceVariants[index]}
-            >
-              {sentence.text}
-            </motion.div>
-          )
-        )} */}
+      <img
+        className="background"
+        src={process.env.PUBLIC_URL + "/assets/background1.jpg"}
+      />
+      <div className="masthead">
+        <div className="masthead__intro">
+          <h1>- 축잘알 퀴즈 -</h1>
+          <h1>축잘알과 축알못들의 시험대</h1>
+          <hr />
+          <div></div>
+          <div>평소 알기 어려웠던 나와 친구의 축덕력을 테스트해보자!</div>
+        </div>
       </div>
       <div className="main__content">
-        <div className="main__content__intro">
-          {/* <h1>"너가 그렇게 축구를 잘알어?"</h1>
-          <div>부터 시작된 본격 축구 지식 겨루기 사이트</div>
-          <div>진짜로 축구를 잘아는지 축덕력 레이더!</div>
-          <div>잔말말고 그냥 해봐!</div> */}
-        </div>
         <Link to="/quiz">
           <button className="main__content__solve">퀴즈풀기</button>
         </Link>

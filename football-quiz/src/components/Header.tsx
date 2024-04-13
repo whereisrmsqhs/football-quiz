@@ -21,7 +21,9 @@ const Header: React.FC = () => {
         <div className="navbar__logo">
           <FontAwesomeIcon icon={faFutbol as IconProp} />
           <Link to={"/"}>
-            <span>축잘알 퀴즈</span>
+            <span>
+              <strong>축잘알 퀴즈</strong>
+            </span>
           </Link>
         </div>
         <ul className={toggleBtn ? "navbar__menu active" : "navbar__menu"}>
@@ -46,7 +48,6 @@ const Header: React.FC = () => {
           <FontAwesomeIcon icon={faBars as IconProp} />
         </a>
       </nav>
-      <hr />
     </div>
   );
 };
