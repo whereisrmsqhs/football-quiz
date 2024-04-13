@@ -23,9 +23,13 @@ const Quiz: React.FC = () => {
   }, []);
   return (
     <div className="quiz_list">
+      <img
+        className="background"
+        src={process.env.PUBLIC_URL + "/assets/background1.jpg"}
+      />
       <header>
         <h1>도전!</h1>
-        <h2>풀어보기</h2>
+        <h2>문제 풀어보기</h2>
       </header>
       {loading ? (
         <div>로딩중...</div>
@@ -35,8 +39,10 @@ const Quiz: React.FC = () => {
             <Link to={`/quiz/${quiz.id}`}>
               <div className="each_quiz_container">
                 <img src={`${img_url}/${quiz.thumbnail}`} alt="썸네일" />
-                <div className="each_quiz_title">{quiz.title}</div>
-                <div className="each_quiz_explain">{quiz.brief_explain}</div>
+                <div className="each_quiz_info">
+                  <div className="each_quiz_title">{quiz.title}</div>
+                  <div className="each_quiz_explain">{quiz.brief_explain}</div>
+                </div>
               </div>
             </Link>
           ))}
