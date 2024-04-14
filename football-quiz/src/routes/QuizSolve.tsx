@@ -21,6 +21,7 @@ interface QuizInfo {
 const QuizSolve: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [quizInfo, setQuizInfo] = useState<QuizInfo>();
+  const [quizStart, setQuizStart] = useState(false);
   const { quizId } = useParams();
   useEffect(() => {
     fetch(`http://localhost:3001/quiz/${quizId}`, {
@@ -32,26 +33,42 @@ const QuizSolve: React.FC = () => {
       });
     setLoading(false);
   }, [quizId]);
+
+  const handleStartBtn = () => {
+    setQuizStart(true);
+  };
   return (
     <div className="solve_container">
-      <h1>퀴즈풀어보자</h1>
-      {loading ? (
-        <div>로딩중...</div>
-      ) : (
-        <div>
-          <h2>퀴즈 제목 : {quizInfo?.name}</h2>
-          <div>총 문제: {quizInfo?.total_quiz}</div>
-          <article>{quizInfo?.quiz_rule}</article>
-          <Link to={`/quiz/${quizId}/solve`}>
-            <button>시작!</button>
-          </Link>
-          {quizId !== undefined ? (
-            <Outlet context={{ quizId }} />
-          ) : (
-            <div>에러가 발생했습니다.</div>
-          )}
-        </div>
-      )}
+      <img
+        className="background"
+        alt="background_image"
+        src={process.env.PUBLIC_URL + "/assets/background1.jpg"}
+      />
+      <div className="solve_container_description">
+        {loading ? (
+          <div>로딩중...</div>
+        ) : (
+          <div>
+            <h1>{quizInfo?.name}</h1>
+            <div className="quiz_num">총 문제: {quizInfo?.total_quiz}</div>
+            {quizStart ? (
+              <></>
+            ) : (
+              <>
+                <article>{quizInfo?.quiz_rule}</article>
+                <Link to={`/quiz/${quizId}/solve`}>
+                  <button onClick={handleStartBtn}>시작</button>
+                </Link>
+              </>
+            )}
+            {quizId !== undefined ? (
+              <Outlet context={{ quizId }} />
+            ) : (
+              <div>에러가 발생했습니다.</div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

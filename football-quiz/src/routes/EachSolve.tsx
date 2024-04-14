@@ -66,23 +66,25 @@ const EachSolve: React.FC = () => {
         <div>로딩중</div>
       ) : eachInfo.length > 0 ? (
         <>
-          <div>내 점수: {currentPoint} 점</div>
-          {eachInfo[0].team &&
-            eachInfo[0].team.map((each, index) => (
-              <React.Fragment key={index}>
-                <img
-                  className="team_logo"
-                  src={`${team_logo_path}/${each}.svg`}
-                  alt="team_logo"
-                />
-                {index !== eachInfo[0].team.length - 1 && (
+          <div className="current_point">현재 점수: {currentPoint} 점</div>
+          <div>
+            {eachInfo[0].team &&
+              eachInfo[0].team.map((each, index) => (
+                <React.Fragment key={index}>
                   <img
-                    src={process.env.PUBLIC_URL + "/assets/arrow.png"}
-                    alt="arrow"
+                    className="team_logo"
+                    src={`${team_logo_path}/${each}.svg`}
+                    alt="team_logo"
                   />
-                )}
-              </React.Fragment>
-            ))}
+                  {index !== eachInfo[0].team.length - 1 && (
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/arrow.png"}
+                      alt="arrow"
+                    />
+                  )}
+                </React.Fragment>
+              ))}
+          </div>
           <form onSubmit={checkUserAnswer}>
             <input
               value={userAnswer}
