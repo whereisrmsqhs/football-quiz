@@ -1,7 +1,8 @@
 import { Link, useOutletContext } from "react-router-dom";
-import { ChangeEvent, Key, useEffect, useState } from "react";
+import { ChangeEvent, Key, useEffect, useRef, useState } from "react";
 import React from "react";
 import "../css/eachsolve.scss";
+import DropDown from "../components/DropDown";
 
 interface QuizIdType {
   quizId: string;
@@ -23,6 +24,7 @@ const EachSolve: React.FC = () => {
   const [currentPoint, setCurrentPoint] = useState(0);
   const [formSubmit, setFormSubmit] = useState(false);
   const [sendMessage, setSendMessage] = useState("");
+  const [isFocus, setIsFocus] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:3001/quiz/${quizId}/solve/${order}`, {
@@ -60,6 +62,16 @@ const EachSolve: React.FC = () => {
     }
   };
 
+  const handleFocus = () => {
+    setIsFocus(true);
+    console.log("input focus 중");
+  };
+
+  const handleBlur = () => {
+    setIsFocus(false);
+    console.log("input focus 해제");
+  };
+
   return (
     <div>
       {loading ? (
@@ -92,8 +104,11 @@ const EachSolve: React.FC = () => {
               type="text"
               placeholder="답안을 입력하세요"
               readOnly={formSubmit ? true : false}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
               required
             />
+            {isFocus ? <DropDown userAnswer={userAnswer} /> : <></>}
             <button type="submit">제출</button>
           </form>
           {formSubmit ? (

@@ -4,6 +4,7 @@ const cors = require("cors");
 const multer = require("multer");
 const db = require("./mysql.js");
 const path = require("path");
+const extractNames = require("./extract.js");
 const app = express();
 
 app.use(express.static("assets"));
@@ -209,6 +210,15 @@ app.get("/quiz/:quizId/solve/:order", (req, res) => {
       res.send("last quiz");
     }
   }
+});
+
+app.get("/playerList", (req, res) => {
+  extractNames("output.json")
+    .then((names) => {
+      const responseName = JSON.stringify(names);
+      res.send(responseName);
+    })
+    .catch((error) => console.error("Error: ", error));
 });
 
 app.listen(port, function () {
