@@ -64,16 +64,10 @@ const EachSolve: React.FC = () => {
 
   const handleFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsFocus(true);
-    console.log("input focus 중");
   };
 
   const handleBlur = () => {
     setIsFocus(false);
-    console.log("input focus 해제");
-  };
-
-  const handleArrow = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(event.key);
   };
 
   return (

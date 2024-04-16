@@ -1,14 +1,42 @@
-// .input_container {
-//   display: block;
-//   width: 300px;
-// }
+.input_container {
+  display: inline-block;
+
+  input {
+    width: 230px;
+    border: 1px solid greenyellow;
+    border-radius: 7px;
+
+    &:focus {
+      border: 0.1px solid gray;
+      box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.19);
+      border-radius: 7px;
+    }
+  }
+
+  ul {
+    overflow-y: scroll;
+    max-height: 20vh;
+    width: 230px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+  }
+}
 
 .candidates_list {
   background-color: white;
-  text-align: center;
+  text-align: left;
 
   li {
+    padding-left: 1em;
     display: block;
+
+    &:nth-child(odd) {
+      background-color: white;
+    }
+
+    &:nth-child(even) {
+      background-color: rgba(128, 128, 128, 0.349);
+    }
   }
 }
 
@@ -17,5 +45,7 @@
 }
 
 .selected {
-  background-color: aqua;
+  background-color: #55a4ff !important;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
 }

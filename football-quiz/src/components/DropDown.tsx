@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { PlayerNameContext } from "../context/PlayerNameContext";
 import "../css/dropdown.scss";
 
@@ -30,6 +30,7 @@ const DropDown: React.FC<Props> = ({
   const [candidateIndex, setCandidateIndex] = useState<number | undefined>(
     undefined
   );
+  const selectedRef = useRef(null);
   useEffect(() => {
     if (userAnswer.length >= 1) {
       setCandidates(
@@ -80,6 +81,15 @@ const DropDown: React.FC<Props> = ({
       }
     }
   };
+
+  useEffect(() => {
+    if (selectedRef.current) {
+      (selectedRef.current as HTMLElement).scrollIntoView({
+        block: "center",
+      });
+    }
+  }, [candidateIndex]);
+
   return (
     <>
       <div className="input_container">
@@ -94,13 +104,14 @@ const DropDown: React.FC<Props> = ({
           onBlur={handleBlur}
           required
         />
-        {userAnswer !== "" ? (
+        {userAnswer !== "" && formSubmit === false ? (
           <>
             <ul className="candidates_list">
               {candidates.map((current, index) => (
                 <li
                   key={index}
                   className={index === candidateIndex ? "selected" : ""}
+                  ref={index === candidateIndex ? selectedRef : null}
                 >
                   {current}
                 </li>
@@ -111,6 +122,7 @@ const DropDown: React.FC<Props> = ({
           <></>
         )}
       </div>
+      <br />
       <button type="submit">제출</button>
     </>
   );
