@@ -22,7 +22,7 @@ const Header: React.FC = () => {
           <FontAwesomeIcon icon={faFutbol as IconProp} />
           <Link to={"/"}>
             <span>
-              <strong>축잘알 퀴즈</strong>
+              <strong> 축잘알 퀴즈</strong>
             </span>
           </Link>
         </div>

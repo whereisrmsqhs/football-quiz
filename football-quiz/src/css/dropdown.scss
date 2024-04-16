@@ -1,3 +1,21 @@
+// .input_container {
+//   display: block;
+//   width: 300px;
+// }
+
 .candidates_list {
   background-color: white;
+  text-align: center;
+
+  li {
+    display: block;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.selected {
+  background-color: aqua;
 }

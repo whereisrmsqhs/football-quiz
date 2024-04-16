@@ -1,5 +1,5 @@
 import { Link, useOutletContext } from "react-router-dom";
-import { ChangeEvent, Key, useEffect, useRef, useState } from "react";
+import { ChangeEvent, Key, useEffect, useState } from "react";
 import React from "react";
 import "../css/eachsolve.scss";
 import DropDown from "../components/DropDown";
@@ -62,7 +62,7 @@ const EachSolve: React.FC = () => {
     }
   };
 
-  const handleFocus = () => {
+  const handleFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsFocus(true);
     console.log("input focus 중");
   };
@@ -70,6 +70,10 @@ const EachSolve: React.FC = () => {
   const handleBlur = () => {
     setIsFocus(false);
     console.log("input focus 해제");
+  };
+
+  const handleArrow = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(event.key);
   };
 
   return (
@@ -98,18 +102,15 @@ const EachSolve: React.FC = () => {
               ))}
           </div>
           <form onSubmit={checkUserAnswer}>
-            <input
-              value={userAnswer}
-              onChange={handleUserInput}
-              type="text"
-              placeholder="답안을 입력하세요"
-              readOnly={formSubmit ? true : false}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              required
+            <DropDown
+              userAnswer={userAnswer}
+              setUserAnswer={setUserAnswer}
+              handleUserInput={handleUserInput}
+              formSubmit={formSubmit}
+              handleFocus={handleFocus}
+              handleBlur={handleBlur}
+              isFocus={isFocus}
             />
-            {isFocus ? <DropDown userAnswer={userAnswer} /> : <></>}
-            <button type="submit">제출</button>
           </form>
           {formSubmit ? (
             <div>
