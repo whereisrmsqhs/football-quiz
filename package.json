@@ -10,10 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/react-modal": "^3.16.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
+    "react-modal": "^3.16.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

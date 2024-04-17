@@ -95,7 +95,7 @@ const EachSolve: React.FC = () => {
                 </React.Fragment>
               ))}
           </div>
-          <form onSubmit={checkUserAnswer}>
+          <form className="quizForm" onSubmit={checkUserAnswer}>
             <DropDown
               userAnswer={userAnswer}
               setUserAnswer={setUserAnswer}

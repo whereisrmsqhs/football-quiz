@@ -1,11 +1,39 @@
 import { useRef, useState } from "react";
 import SelectClubsList from "../components/SelectClubsList";
 import { title } from "process";
+import "../css/createquiz.scss";
+import ReactModal from "react-modal";
 
 export interface eachQuizInfo {
   team: string;
   answer: string;
 }
+
+const customModalStyles: ReactModal.Styles = {
+  overlay: {
+    backgroundColor: " rgba(0, 0, 0, 0.4)",
+    width: "100%",
+    height: "100vh",
+    zIndex: "10",
+    position: "fixed",
+    top: "0",
+    left: "0",
+  },
+  content: {
+    width: "360px",
+    height: "180px",
+    zIndex: "150",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    borderRadius: "10px",
+    boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
+    backgroundColor: "white",
+    justifyContent: "center",
+    overflow: "auto",
+  },
+};
 
 const CreateQuiz: React.FC = () => {
   const title = useRef<any>(null);
@@ -52,8 +80,13 @@ const CreateQuiz: React.FC = () => {
     setDifficulty(value);
   };
   return (
-    <div>
-      <form>
+    <div className="container">
+      <img
+        className="background"
+        alt="background_image"
+        src={process.env.PUBLIC_URL + "/assets/background1.jpg"}
+      />
+      <form className="postForm">
         <label htmlFor="type">퀴즈 형식</label>
         <select name="quizType" id="type" value={type} onChange={handleSelect}>
           <option value="">퀴즈 형식을 선택해주세요.</option>
@@ -63,17 +96,20 @@ const CreateQuiz: React.FC = () => {
           </option>
         </select>
         {type === "type1" ? (
-          <div>
-            <label>퀴즈 이름</label>
-            <input ref={title} type="text" placeholder="제목을 적어주세요" />
-            <label>퀴즈 룰 설명</label>
-            <input
-              ref={explain}
-              type="text"
-              placeholder="필요한 퀴즈 설명을 적어주세요"
-            />
-            <br />
-            <label>퀴즈 난이도 설정 (개발중)</label>
+          <ReactModal isOpen={true}>
+            <div>
+              <label>퀴즈 이름</label>
+              <input ref={title} type="text" placeholder="제목을 적어주세요" />
+            </div>
+            <div>
+              <label>퀴즈 룰 설명</label>
+              <input
+                ref={explain}
+                type="text"
+                placeholder="필요한 퀴즈 설명을 적어주세요"
+              />
+            </div>
+            <label>퀴즈 난이도 설정 </label>
             <input
               type="radio"
               name="difficulty"
@@ -127,7 +163,7 @@ const CreateQuiz: React.FC = () => {
             <br />
             <input ref={thumbnail} type="file" name="userfile" />
             <button onClick={handleType1Submit}>문제집 등록!</button>
-          </div>
+          </ReactModal>
         ) : null}
         {type === "type2" ? (
           <div>

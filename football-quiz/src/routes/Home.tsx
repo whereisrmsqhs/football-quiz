@@ -34,38 +34,7 @@ const reducer = (state: SentenceType[], action: ActionType): SentenceType[] => {
   }
 };
 
-const initialState = [
-  { text: "너가 진짜 xxx팬이라고???", top: randomTop(), delay: 0 },
-  {
-    text: "이번 시즌 챔스 우승은 누가할것 같은데?",
-    top: randomTop(),
-    delay: 0,
-  },
-  { text: "작년 발롱도르 위너가 누구였음?", top: randomTop(), delay: 0 },
-  { text: "어제 손흥민 골 몇골 넣었는데?", top: randomTop(), delay: 0 },
-  { text: "이번 시즌 가장 유망한 선수는?", top: randomTop(), delay: 0 },
-  { text: "xx팀 감독이 누군데?", top: randomTop(), delay: 0 },
-  { text: "초대 챔피언스리그 우승팀은?", top: randomTop(), delay: 0 },
-  { text: "너가 감스트보다 모를것 같은데?", top: randomTop(), delay: 0 },
-  { text: "여기 퀴즈 다 맞추면 인정!", top: randomTop(), delay: 0 },
-];
-
 const Home: React.FC = () => {
-  const [sentenceInfo, dispatch] = useReducer(reducer, initialState);
-  useEffect(() => {
-    // dispatch({ type: "INIT", index: 0 });
-    console.log(sentenceInfo);
-  }, []);
-
-  const sentenceVariants = sentenceInfo.map(
-    (sentence: { text: string; top: number; delay: number }) => ({
-      start: {
-        x: 0,
-        y: `${sentence.top}vh`, // 각 문장마다 다른 y값 설정
-      },
-    })
-  );
-
   return (
     <div className="main">
       <img
