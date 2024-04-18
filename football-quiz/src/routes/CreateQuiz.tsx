@@ -42,6 +42,7 @@ const CreateQuiz: React.FC = () => {
   const [type, setType] = useState<string>("");
   const [difficulty, setDifficulty] = useState<number>(3);
   const [registed, setRegisted] = useState<eachQuizInfo[]>([]);
+
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setType(e.target.value);
   };
@@ -103,9 +104,9 @@ const CreateQuiz: React.FC = () => {
             </div>
             <div>
               <label>퀴즈 룰 설명</label>
-              <input
+              <textarea
+                className="rule_container"
                 ref={explain}
-                type="text"
                 placeholder="필요한 퀴즈 설명을 적어주세요"
               />
             </div>
