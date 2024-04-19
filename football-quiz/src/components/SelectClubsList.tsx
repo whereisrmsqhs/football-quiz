@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SelectClubs from "./SelectClubs";
 import { eachQuizInfo } from "../routes/CreateQuiz";
+import "../css/selectclubslist.scss";
 
 type saveInfo = {
   saveEachQuizInfo: (registedClub: string, answer: string) => void;
@@ -52,7 +53,12 @@ const SelectClubsList: React.FC<saveInfo> = ({ saveEachQuizInfo }) => {
       <button onClick={onClubAdd}>클럽 추가</button>
       <button onClick={onClubDelete}>클럽 삭제</button>
       <div>
-        <input value={answer} onChange={answerChange} placeholder="정답" />
+        <input
+          className="quiz_answer"
+          value={answer}
+          onChange={answerChange}
+          placeholder="정답"
+        />
       </div>
       <button
         onClick={(event) => {
