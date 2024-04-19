@@ -1,21 +1,30 @@
 import { useState } from "react";
 
-type Regist = (club: string, id: number) => void;
-
 interface Props {
   selectId: number;
-  registClub: Regist;
+  setTeams: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const SelectClub: React.FC<Props> = ({ selectId, registClub }) => {
-  const [team, setTeam] = useState<string>("");
-  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTeam(event?.target.value);
-    registClub(event.target.value, selectId);
+const SelectClub: React.FC<Props> = ({ selectId, setTeams }) => {
+  const [search, setSearch] = useState<string>("");
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event?.target.value);
+    setTeams((prev) => {
+      prev[selectId] = event.target.value;
+      console.log(prev);
+      return prev;
+    });
   };
   return (
     <div>
-      <select id={`club_team${selectId}`} value={team} onChange={handleSelect}>
+      <input
+        type="text"
+        list={`club_team${selectId}`}
+        value={search}
+        onChange={handleChange}
+      />
+      <datalist id={`club_team${selectId}`}>
         <option value="">클럽을 선택하세요</option>
         <option value="Brighton">브라이튼</option>
         <option value="Chelsea">첼시</option>
@@ -87,7 +96,7 @@ const SelectClub: React.FC<Props> = ({ selectId, registClub }) => {
         <option value="Boca Juniors">보카 주니어스</option>
         {/* 네덜란드 리그 */}
         <option value="Volendam">FC 폴렌담</option>
-      </select>
+      </datalist>
     </div>
   );
 };

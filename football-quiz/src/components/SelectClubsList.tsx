@@ -4,34 +4,26 @@ import { eachQuizInfo } from "../routes/CreateQuiz";
 import "../css/selectclubslist.scss";
 
 type saveInfo = {
-  saveEachQuizInfo: (registedClub: string, answer: string) => void;
+  saveEachQuizInfo: (teams: string[], answer: string) => void;
 };
 
 const SelectClubsList: React.FC<saveInfo> = ({ saveEachQuizInfo }) => {
   const [selectId, setSelectId] = useState<number>(0);
-  const [registedClub, setRegistedClub] = useState<string>("");
+  // const [registedClub, setRegistedClub] = useState<string>("");
   const [answer, setAnswer] = useState<string>("");
+  const [teams, setTeams] = useState<string[]>([]);
   const answerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(event.target.value);
   };
-  const registClub = (selectedClub: string, id: number) => {
-    setRegistedClub((prev) => {
-      if (prev === "") {
-        prev = selectedClub;
-      } else {
-        prev += `,${selectedClub}`;
-      }
-      return prev;
-    });
-  };
+
   const [selectClubs, setSelectClubs] = useState<any[]>([
-    <SelectClubs selectId={selectId} registClub={registClub} />,
+    <SelectClubs selectId={selectId} setTeams={setTeams} />,
   ]);
   const onClubAdd = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault();
     setSelectClubs(
       selectClubs.concat(
-        <SelectClubs selectId={selectId + 1} registClub={registClub} />
+        <SelectClubs selectId={selectId + 1} setTeams={setTeams} />
       )
     );
     setSelectId(selectId + 1);
@@ -39,6 +31,11 @@ const SelectClubsList: React.FC<saveInfo> = ({ saveEachQuizInfo }) => {
   const onClubDelete = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault();
     setSelectId(selectId - 1);
+    setTeams((prev) => {
+      const next = [...prev];
+      next.pop();
+      return next;
+    });
     if (selectClubs.length >= 2) {
       setSelectClubs((prev) => {
         const next = [...prev];
@@ -63,9 +60,9 @@ const SelectClubsList: React.FC<saveInfo> = ({ saveEachQuizInfo }) => {
       <button
         onClick={(event) => {
           event.preventDefault();
-          saveEachQuizInfo(registedClub, answer);
-          setRegistedClub("");
+          saveEachQuizInfo(teams, answer);
           setSelectClubs([]);
+          setTeams([]);
           setAnswer("");
           setSelectId(-1);
         }}

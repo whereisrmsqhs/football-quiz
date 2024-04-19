@@ -18,7 +18,8 @@ const CreateQuiz: React.FC = () => {
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setType(e.target.value);
   };
-  const saveEachQuizInfo = (registedClub: string, answer: string) => {
+  const saveEachQuizInfo = (teams: string[], answer: string) => {
+    const registedClub = teams.join(",");
     setRegisted((registed) => {
       const newInfo = {
         team: registedClub,
