@@ -2,6 +2,20 @@
   position: relative;
   height: auto;
   text-align: center;
+
+  button {
+    background-color: white;
+    padding: 0.5em 1em;
+    border-radius: 14px;
+    border: none;
+    margin: 1em 1em;
+    transition: all 0.15s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: gray;
+    }
+  }
 }
 
 .background {
@@ -29,18 +43,4 @@
 
 article {
   font-size: large;
-}
-
-button {
-  background-color: white;
-  padding: 0.5em 1em;
-  border-radius: 14px;
-  border: none;
-  margin: 1em 1em;
-  transition: all 0.15s;
-  cursor: pointer;
-
-  &:hover {
-    background-color: gray;
-  }
 }

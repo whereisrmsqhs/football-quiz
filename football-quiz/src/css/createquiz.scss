@@ -28,6 +28,10 @@
       box-shadow 0.15s ease-in-out 0s;
     width: 100%;
   }
+
+  hr {
+    border-top: 1px solid #e7eaec;
+  }
 }
 
 .type_select {
@@ -62,5 +66,30 @@
 
   input {
     margin-left: 1vw;
+  }
+}
+
+.quiz_registed {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #e5e6e7;
+  border-radius: 10px;
+  padding: 6px 12px;
+  background-color: white;
+  width: auto;
+  box-shadow: 0.15s ease-in-out 0s;
+
+  button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    background-color: #3182f6;
+    transition: opacity 0.3s ease-in-out;
+    cursor: pointer;
   }
 }

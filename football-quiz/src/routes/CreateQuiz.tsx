@@ -14,6 +14,7 @@ const CreateQuiz: React.FC = () => {
   const [type, setType] = useState<string>("");
   const [difficulty, setDifficulty] = useState<number>(3);
   const [registed, setRegisted] = useState<eachQuizInfo[]>([]);
+  const [hover, setHover] = useState<boolean[]>([]);
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setType(e.target.value);
@@ -53,6 +54,30 @@ const CreateQuiz: React.FC = () => {
     const value = parseInt(event.target.value);
     setDifficulty(value);
   };
+
+  const handleMouseOver = (index: number) => {
+    setHover((prev) => {
+      const temp: boolean[] = [...prev];
+      temp[index] = true;
+      return temp;
+    });
+  };
+
+  const handleMouseOut = (index: number) => {
+    setHover((prev) => {
+      const temp: boolean[] = [...prev];
+      temp[index] = false;
+      return temp;
+    });
+  };
+
+  const deletePlayerInfo = (index: number) => {
+    setRegisted((prev) => {
+      if (prev.length === 1) return [];
+      return prev.splice(index, 1);
+    });
+  };
+
   return (
     <div className="container">
       <img
@@ -82,6 +107,7 @@ const CreateQuiz: React.FC = () => {
               <label>제목</label>
               <input ref={title} type="text" placeholder="제목을 적어주세요" />
             </div>
+            <hr />
             <div className="type1_quiz_rule">
               <label>룰 설명</label>
               <textarea
@@ -90,6 +116,7 @@ const CreateQuiz: React.FC = () => {
                 placeholder="필요한 퀴즈 설명을 적어주세요"
               />
             </div>
+            <hr />
             <div className="type1_difficulty">
               <label>난이도</label>
               <input
@@ -133,16 +160,40 @@ const CreateQuiz: React.FC = () => {
               />{" "}
               교수님
             </div>
+            <hr />
             <h2>추가될 클럽 순서는 예전 ~ 최근 클럽 순으로 추가해주세요.</h2>
             <SelectClubsList saveEachQuizInfo={saveEachQuizInfo} />
-            {registed.map((quiz, index) => {
-              return (
-                <div key={index}>
-                  <div>{quiz.answer}</div>
-                  <div>{quiz.team}</div>
-                </div>
-              );
-            })}
+            {registed.length !== 0 ? (
+              <span>
+                {registed.map((quiz, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="quiz_registed"
+                      onMouseOver={() => handleMouseOver(index)}
+                      onMouseLeave={() => handleMouseOut(index)}
+                    >
+                      <div>{quiz.answer}</div>
+                      <div>{quiz.team}</div>
+                      {hover[index] ? (
+                        <button
+                          onClick={(event) => {
+                            event.preventDefault();
+                            deletePlayerInfo(index);
+                          }}
+                        >
+                          삭제
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  );
+                })}
+              </span>
+            ) : (
+              <></>
+            )}
             <br />
             <input ref={thumbnail} type="file" name="userfile" />
             <button onClick={handleType1Submit}>문제집 등록!</button>
