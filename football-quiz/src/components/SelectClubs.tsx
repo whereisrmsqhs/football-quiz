@@ -26,8 +26,14 @@ const SelectClub: React.FC<Props> = ({ selectId, setTeams }) => {
       />
       <datalist id={`club_team${selectId}`}>
         <option value="">클럽을 선택하세요</option>
+        <option value="AFC Bournemouth">본머스</option>
+        <option value="Arsenal">아스날</option>
+        <option value="Aston Villa">아스톤 빌라</option>
+        <option value="Brentford">브렌트포드</option>
         <option value="Brighton">브라이튼</option>
+        <option value="Burnley">번리</option>
         <option value="Chelsea">첼시</option>
+        <option value="Crystal Palace">크리스탈 팰리스</option>
         <option value="Everton">에버튼</option>
         <option value="Fulham">풀럼</option>
         <option value="Newcastle United">뉴캐슬</option>
@@ -35,11 +41,15 @@ const SelectClub: React.FC<Props> = ({ selectId, setTeams }) => {
         <option value="Nottingham Forest">노팅엄 포레스트</option>
         <option value="Manchester City">맨체스터 시티</option>
         <option value="Manchester United">맨유</option>
-        <option value="Southampton">사우스햄튼</option>
+        <option value="Luton Town">루턴 타운</option>
         <option value="Tottenham">토트넘</option>
+        <option value="West Ham United">웨스트햄 유나이티드</option>
+        <option value="Wolverhampton Wanderers">울버햄튼 원더러스</option>
+
         <option value="Coverntry">코번트리</option>
         <option value="Leicester">레스터 시티</option>
         <option value="Swansea City">스완지 시티</option>
+        <option value="Southampton">사우스햄튼</option>
         <option value="Watford">왓포드</option>
         <option value="Bristol Rovers">브리스톨 로버스</option>
         <option value="Lincoln City">링컨 시티</option>
