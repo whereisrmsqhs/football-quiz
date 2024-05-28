@@ -50,6 +50,7 @@ const SelectClubsList: React.FC<saveInfo> = ({ saveEachQuizInfo }) => {
       <button onClick={onClubAdd}>클럽 추가</button>
       <button onClick={onClubDelete}>클럽 삭제</button>
       <div>
+        {/* input대신에 DropDown 기능이 추가해야됨 */}
         <input
           className="quiz_answer"
           value={answer}

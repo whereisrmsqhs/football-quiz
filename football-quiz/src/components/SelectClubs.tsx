@@ -26,6 +26,8 @@ const SelectClub: React.FC<Props> = ({ selectId, setTeams }) => {
       />
       <datalist id={`club_team${selectId}`}>
         <option value="">클럽을 선택하세요</option>
+
+        {/* 잉글랜드 */}
         <option value="AFC Bournemouth">본머스</option>
         <option value="Arsenal">아스날</option>
         <option value="Aston Villa">아스톤 빌라</option>
