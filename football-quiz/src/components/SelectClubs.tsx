@@ -23,6 +23,7 @@ const SelectClub: React.FC<Props> = ({ selectId, setTeams }) => {
         list={`club_team${selectId}`}
         value={search}
         onChange={handleChange}
+        placeholder="클럽 이름을 검색해보세요"
       />
       <datalist id={`club_team${selectId}`}>
         <option value="">클럽을 선택하세요</option>

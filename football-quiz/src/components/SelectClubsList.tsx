@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import SelectClubs from "./SelectClubs";
 import { eachQuizInfo } from "../routes/CreateQuiz";
 import "../css/selectclubslist.scss";
+import DropDown from "./DropDown";
 
 type saveInfo = {
   saveEachQuizInfo: (teams: string[], answer: string) => void;
@@ -12,6 +13,10 @@ const SelectClubsList: React.FC<saveInfo> = ({ saveEachQuizInfo }) => {
   // const [registedClub, setRegistedClub] = useState<string>("");
   const [answer, setAnswer] = useState<string>("");
   const [teams, setTeams] = useState<string[]>([]);
+  const [userAnswer, setUserAnswer] = useState<string>("");
+  const [formSubmit, setFormSubmit] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
+
   const answerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(event.target.value);
   };
@@ -44,6 +49,16 @@ const SelectClubsList: React.FC<saveInfo> = ({ saveEachQuizInfo }) => {
       });
     }
   };
+  const handleUserInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setUserAnswer(event.target.value);
+  };
+  const handleFocus = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsFocus(true);
+  };
+  const handleBlur = () => {
+    setIsFocus(false);
+  };
+
   return (
     <div>
       {selectClubs}
@@ -51,6 +66,15 @@ const SelectClubsList: React.FC<saveInfo> = ({ saveEachQuizInfo }) => {
       <button onClick={onClubDelete}>클럽 삭제</button>
       <div>
         {/* input대신에 DropDown 기능이 추가해야됨 */}
+        <DropDown
+          userAnswer={userAnswer}
+          setUserAnswer={setUserAnswer}
+          handleUserInput={handleUserInput}
+          formSubmit={formSubmit}
+          handleFocus={handleFocus}
+          handleBlur={handleBlur}
+          isFocus={isFocus}
+        />
         <input
           className="quiz_answer"
           value={answer}
