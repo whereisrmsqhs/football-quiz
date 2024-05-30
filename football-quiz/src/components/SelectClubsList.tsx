@@ -67,9 +67,9 @@ const SelectClubsList: React.FC<saveInfo> = ({ saveEachQuizInfo }) => {
       <div>
         {/* input대신에 DropDown 기능이 추가해야됨 */}
         <DropDown
-          userAnswer={userAnswer}
+          userAnswer={answer}
           setUserAnswer={setUserAnswer}
-          handleUserInput={handleUserInput}
+          handleUserInput={answerChange}
           formSubmit={formSubmit}
           handleFocus={handleFocus}
           handleBlur={handleBlur}
