@@ -5,6 +5,9 @@ const multer = require("multer");
 const db = require("./mysql.js");
 const path = require("path");
 const extractNames = require("./extract.js");
+var session = require("express-session");
+const { Strategy } = require("passport-local");
+var FileStore = require("session-file-store")(session);
 const app = express();
 
 app.use(express.static("assets"));
@@ -17,9 +20,35 @@ const corsOption = {
   allowHeaders: ["Content-Type", "Authorization"],
 };
 
+var passport = require("passport"),
+  LocalStrategy = require("passport-local").Strategy;
+
 app.use(cors(corsOption));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(
+  session({
+    secret: "asadlfkj!@#!@#dfgasdg",
+    resave: false,
+    saveUninitialized: true,
+    store: new FileStore(),
+  })
+);
+
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: "username",
+      passwordField: "password",
+    },
+    function (username, password, done) {
+      console.log("Localstorage", username, password);
+    }
+  )
+);
 
 let all_info = [];
 
@@ -220,6 +249,19 @@ app.get("/playerList", (req, res) => {
     })
     .catch((error) => console.error("Error: ", error));
 });
+
+app.get("/login", (req, res) => {});
+
+app.post(
+  "/login_process",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  }),
+  (req, res) => {
+    res.send("login logic!");
+  }
+);
 
 app.listen(port, function () {
   console.log(`App is listening on port ${port} !`);
