@@ -75,12 +75,6 @@ const SelectClubsList: React.FC<saveInfo> = ({ saveEachQuizInfo }) => {
           handleBlur={handleBlur}
           isFocus={isFocus}
         />
-        <input
-          className="quiz_answer"
-          value={answer}
-          onChange={answerChange}
-          placeholder="정답"
-        />
       </div>
       <button
         onClick={(event) => {

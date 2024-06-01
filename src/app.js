@@ -20,14 +20,9 @@ const corsOption = {
   allowHeaders: ["Content-Type", "Authorization"],
 };
 
-var passport = require("passport"),
-  LocalStrategy = require("passport-local").Strategy;
-
 app.use(cors(corsOption));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(
   session({
@@ -37,6 +32,12 @@ app.use(
     store: new FileStore(),
   })
 );
+
+var passport = require("passport"),
+  LocalStrategy = require("passport-local").Strategy;
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 passport.use(
   new LocalStrategy(
@@ -256,7 +257,7 @@ app.post(
   "/login_process",
   passport.authenticate("local", {
     successRedirect: "/",
-    failureRedirect: "/login",
+    failureRedirect: "/",
   }),
   (req, res) => {
     res.send("login logic!");
