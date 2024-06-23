@@ -39,6 +39,20 @@ var passport = require("passport"),
 app.use(passport.initialize());
 app.use(passport.session());
 
+passport.serializeUser(function (user, done) {
+  console.log("serializeUser", user);
+  done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+  db.get("SELECT * FROM user WHERE id = ?", [id], function (err, user) {
+    if (err) {
+      return done(err);
+    }
+    return done(null, user[0]);
+  });
+});
+
 passport.use(
   new LocalStrategy(
     {
@@ -47,6 +61,28 @@ passport.use(
     },
     function (username, password, done) {
       console.log("Localstorage", username, password);
+      db.query(`SELECT * from user`, function (error, user) {
+        if (error) {
+          throw error;
+        }
+        if (username === user.login_id) {
+          console.log(1);
+          if (password === user.password) {
+            console.log(2);
+            return done(null, user[0]);
+          } else {
+            console.log(3);
+            return done(null, false, {
+              message: "Incorrect Password",
+            });
+          }
+        } else {
+          console.log(4);
+          return done(null, false, {
+            message: "Incorrect username",
+          });
+        }
+      });
     }
   )
 );
@@ -250,6 +286,10 @@ app.get("/playerList", (req, res) => {
     })
     .catch((error) => console.error("Error: ", error));
 });
+
+app.get("/signup", (req, res) => {});
+
+app.post("/signup_process", (req, res) => {});
 
 app.get("/login", (req, res) => {});
 
