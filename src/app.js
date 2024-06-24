@@ -8,6 +8,7 @@ const extractNames = require("./extract.js");
 var session = require("express-session");
 const { Strategy } = require("passport-local");
 var FileStore = require("session-file-store")(session);
+var shortid = require("shortid");
 const app = express();
 
 app.use(express.static("assets"));
@@ -289,7 +290,119 @@ app.get("/playerList", (req, res) => {
 
 app.get("/signup", (req, res) => {});
 
-app.post("/signup_process", (req, res) => {});
+app.post("/signup_process", (req, res) => {
+  const info = req.body.state;
+
+  const user_id = info.username;
+  const id_check = info.id_check;
+  const pwd1 = info.password;
+  const pwd2 = info.password_check;
+  const email = info.email;
+  const nickname = info.nickname;
+  const gender = info.gender;
+  const birth = info.birth;
+  const fan_team = info.fan_team;
+
+  console.log(shortid.generate());
+
+  const regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{5,16}$/;
+  const pwd_regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
+  const email_regExp = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+  const nickname_regExp = /^[가-힣a-zA-Z0-9/?]{1,16}$/;
+  const birth_regExp =
+    /^(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/;
+
+  if (!id_check) {
+    res.send("아이디 중복 확인을 해주세요");
+  }
+  if (!regExp.test(user_id)) {
+    res.send(
+      "아이디: 5~16자의 영문 소문자, 숫자와 특수문자(._-)만 사용 가능합니다."
+    );
+  }
+  if (!pwd_regExp.test(pwd1)) {
+    res.send(
+      "#영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용"
+    );
+  }
+  if (pwd1 !== pwd2) {
+    res.send("두 비밀번호가 다릅니다, 확인해주세요");
+  }
+  if (!email_regExp.test(email)) {
+    res.send("잘못된 이메일 형식입니다.");
+  }
+  if (!nickname_regExp.test(nickname)) {
+    res.send("닉네임의 최대 길이는 16글자입니다.");
+  }
+  if (!birth_regExp.test(birth)) {
+    res.send("잘못된 생년월일 형식입니다.");
+  }
+  db.query(
+    `SELECT kor_name FROM team WHERE kor_name=?`,
+    [fan_team],
+    function (error, result) {
+      if (error) throw error;
+      if (result.length === 0) {
+        res.send("잘못된 팀정보");
+      }
+    }
+  );
+
+  // Date 객체를 MySQL DATETIME 형식으로 변환하는 함수
+  function formatDateToMySQL(datetime) {
+    const year = datetime.getFullYear();
+    const month = ("0" + (datetime.getMonth() + 1)).slice(-2);
+    const day = ("0" + datetime.getDate()).slice(-2);
+    const hours = ("0" + datetime.getHours()).slice(-2);
+    const minutes = ("0" + datetime.getMinutes()).slice(-2);
+    const seconds = ("0" + datetime.getSeconds()).slice(-2);
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
+  const current_time = formatDateToMySQL(new Date());
+
+  // 비번 암호화해야되요, birth는 반드시 yyyy-mm-dd 이런형식으로 추가해줘야함.
+  // 이메일 인증! 추후 mailgun 활용해보자!
+  db.query(
+    `INSERT INTO user (id, login_id, password, nickname, email, gender, birth, created_at, updated_at, fan_team, profile_image)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+    [
+      shortid.generate(),
+      user_id,
+      pwd1,
+      nickname,
+      email,
+      gender,
+      birth,
+      current_time,
+      current_time,
+      fan_team,
+      "none",
+    ],
+    function (error, result) {
+      if (error) throw error;
+      res.send("회원가입 성공!");
+    }
+  );
+});
+
+app.post("/check_user_id", (req, res) => {
+  const user_id = req.body.user_id;
+
+  db.query(
+    `SELECT login_id FROM user WHERE login_id=?`,
+    [user_id],
+    function (error, result) {
+      if (error) throw error;
+      if (result.length > 0) {
+        console.log("중복된 아이디");
+        res.send("중복된 아이디입니다.");
+      } else {
+        console.log("사용 가능한 아이디");
+        res.send("사용 가능한 아이디입니다.");
+      }
+    }
+  );
+});
 
 app.get("/login", (req, res) => {});
 

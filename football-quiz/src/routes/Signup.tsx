@@ -1,8 +1,23 @@
-import { useReducer } from "react";
+import { ChangeEvent, FormEvent, useReducer } from "react";
+// FormState 타입 정의
+interface FormState {
+  username: string;
+  password: string;
+  password_check: string;
+  email: string;
+  nickname: string;
+  gender: string;
+  birth: string;
+  fan_team: string;
+}
 
-const initialState = {
+// Action 타입 정의
+type Action = { type: "SET_FIELD"; field: keyof FormState; value: string };
+
+const initialState: FormState = {
   username: "",
   password: "",
+  password_check: "",
   email: "",
   nickname: "",
   gender: "",
@@ -10,7 +25,7 @@ const initialState = {
   fan_team: "",
 };
 
-const reducer = (state, action) => {
+const reducer = (state: FormState, action: Action): FormState => {
   switch (action.type) {
     case "SET_FIELD":
       return {
@@ -25,45 +40,96 @@ const reducer = (state, action) => {
 const Signup: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    dispatch({ type: "SET_FIELD", field: name, value });
+    dispatch({ type: "SET_FIELD", field: name as keyof FormState, value });
   };
 
-  const handleSubmit = (event) => {
+  const isStateEmpty = (state: FormState): boolean => {
+    for (let key in state) {
+      if (state.hasOwnProperty(key)) {
+        const value = state[key as keyof FormState];
+        if (value === "") {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(state);
+
+    if (isStateEmpty(state)) {
+      console.log("비어있는 정보가 있음");
+      return;
+    }
+
+    const response = await fetch("http://localhost:3001/signup_process", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ state }),
+    });
+    console.log(response);
+  };
+
+  const checkUserId = async () => {
+    const response = await fetch("http://localhost:3001/check_user_id", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user_id: state.username }),
+    });
+    console.log(response);
   };
 
   return (
     <>
       <h1>회원가입</h1>
-      <form method="post">
+      <form onSubmit={handleSubmit} method="post">
         <section>
           <input
             id="username"
             name="username"
             type="text"
             placeholder="아이디"
-            required
+            value={state.username}
+            onChange={handleChange}
           />
         </section>
+        <button onClick={checkUserId}>중복체크</button>
         <section>
           <input
             id="current-password"
             name="password"
             type="password"
             placeholder="비밀번호"
-            required
+            value={state.password}
+            onChange={handleChange}
+          />
+        </section>
+        <section>
+          <input
+            id="current-password"
+            name="password_check"
+            type="password"
+            placeholder="비밀번호 확인"
+            value={state.password_check}
+            onChange={handleChange}
           />
         </section>
         <section>
           <input
             id="email"
             name="email"
-            type="text"
+            type="email"
             placeholder="이메일주소"
-            required
+            value={state.email}
+            onChange={handleChange}
           />
         </section>
         <section>
@@ -72,17 +138,32 @@ const Signup: React.FC = () => {
             name="nickname"
             type="text"
             placeholder="닉네임"
-            required
+            value={state.nickname}
+            onChange={handleChange}
           />
         </section>
-        <div id="sex">
+        <div id="gender">
           <ul>
             <li className="radio_item">
-              <input type="radio" id="identityGender1"></input>
+              <input
+                type="radio"
+                id="identityGender1"
+                name="gender"
+                value="남자"
+                checked={state.gender === "남자"}
+                onChange={handleChange}
+              ></input>
               <label htmlFor="identityGender1">남자</label>
             </li>
             <li className="radio_item">
-              <input type="radio" id="identityGender2"></input>
+              <input
+                type="radio"
+                id="identityGender2"
+                name="gender"
+                value="여자"
+                checked={state.gender === "여자"}
+                onChange={handleChange}
+              ></input>
               <label htmlFor="identityGender2">여자</label>
             </li>
           </ul>
@@ -93,7 +174,8 @@ const Signup: React.FC = () => {
             name="birth"
             type="text"
             placeholder="생년월일 8자리"
-            required
+            value={state.birth}
+            onChange={handleChange}
           />
         </section>
         <section>
@@ -102,7 +184,8 @@ const Signup: React.FC = () => {
             name="fan_team"
             type="text"
             placeholder="선호 축구 클럽"
-            required
+            value={state.fan_team}
+            onChange={handleChange}
           />
         </section>
         <button type="submit">인증요청</button>
