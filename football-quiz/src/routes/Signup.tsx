@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useReducer } from "react";
 // FormState 타입 정의
 interface FormState {
   username: string;
+  id_check: boolean;
   password: string;
   password_check: string;
   email: string;
@@ -16,6 +17,7 @@ type Action = { type: "SET_FIELD"; field: keyof FormState; value: string };
 
 const initialState: FormState = {
   username: "",
+  id_check: true,
   password: "",
   password_check: "",
   email: "",
@@ -66,6 +68,12 @@ const Signup: React.FC = () => {
       return;
     }
 
+    const year = state.birth.slice(0, 4);
+    const month = state.birth.slice(4, 6);
+    const day = state.birth.slice(6, 8);
+
+    state.birth = `${year}-${month}-${day}`;
+
     const response = await fetch("http://localhost:3001/signup_process", {
       method: "POST",
       headers: {
@@ -73,18 +81,23 @@ const Signup: React.FC = () => {
       },
       body: JSON.stringify({ state }),
     });
-    console.log(response);
+    console.log(response.text());
   };
 
-  const checkUserId = async () => {
-    const response = await fetch("http://localhost:3001/check_user_id", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ user_id: state.username }),
-    });
-    console.log(response);
+  const checkUserId = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    try {
+      const response = await fetch("http://localhost:3001/check_user_id", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: state.username }),
+      });
+      console.log(response.json());
+    } catch (error) {
+      console.log("Error:", error);
+    }
   };
 
   return (
@@ -149,8 +162,8 @@ const Signup: React.FC = () => {
                 type="radio"
                 id="identityGender1"
                 name="gender"
-                value="남자"
-                checked={state.gender === "남자"}
+                value="male"
+                checked={state.gender === "male"}
                 onChange={handleChange}
               ></input>
               <label htmlFor="identityGender1">남자</label>
@@ -160,8 +173,8 @@ const Signup: React.FC = () => {
                 type="radio"
                 id="identityGender2"
                 name="gender"
-                value="여자"
-                checked={state.gender === "여자"}
+                value="female"
+                checked={state.gender === "female"}
                 onChange={handleChange}
               ></input>
               <label htmlFor="identityGender2">여자</label>

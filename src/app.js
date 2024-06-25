@@ -116,6 +116,17 @@ const posts = [
   },
 ];
 
+// Date 객체를 MySQL DATETIME 형식으로 변환하는 함수
+function formatDateToMySQL(datetime) {
+  const year = datetime.getFullYear();
+  const month = ("0" + (datetime.getMonth() + 1)).slice(-2);
+  const day = ("0" + datetime.getDate()).slice(-2);
+  const hours = ("0" + datetime.getHours()).slice(-2);
+  const minutes = ("0" + datetime.getMinutes()).slice(-2);
+  const seconds = ("0" + datetime.getSeconds()).slice(-2);
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
 app.get("/quiz", (req, res) => {
   db.query(`SELECT * from quiz_collection`, function (error, quiz_collection) {
     if (error) {
@@ -300,10 +311,8 @@ app.post("/signup_process", (req, res) => {
   const email = info.email;
   const nickname = info.nickname;
   const gender = info.gender;
-  const birth = info.birth;
+  let birth = info.birth;
   const fan_team = info.fan_team;
-
-  console.log(shortid.generate());
 
   const regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{5,16}$/;
   const pwd_regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
@@ -314,28 +323,35 @@ app.post("/signup_process", (req, res) => {
 
   if (!id_check) {
     res.send("아이디 중복 확인을 해주세요");
+    return;
   }
   if (!regExp.test(user_id)) {
     res.send(
       "아이디: 5~16자의 영문 소문자, 숫자와 특수문자(._-)만 사용 가능합니다."
     );
+    return;
   }
   if (!pwd_regExp.test(pwd1)) {
     res.send(
       "#영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요. 특수문자(!@#$%^&*)도 사용"
     );
+    return;
   }
   if (pwd1 !== pwd2) {
     res.send("두 비밀번호가 다릅니다, 확인해주세요");
+    return;
   }
   if (!email_regExp.test(email)) {
     res.send("잘못된 이메일 형식입니다.");
+    return;
   }
   if (!nickname_regExp.test(nickname)) {
     res.send("닉네임의 최대 길이는 16글자입니다.");
+    return;
   }
   if (!birth_regExp.test(birth)) {
     res.send("잘못된 생년월일 형식입니다.");
+    return;
   }
   db.query(
     `SELECT kor_name FROM team WHERE kor_name=?`,
@@ -344,43 +360,35 @@ app.post("/signup_process", (req, res) => {
       if (error) throw error;
       if (result.length === 0) {
         res.send("잘못된 팀정보");
+        return;
+      } else {
+        const current_time = formatDateToMySQL(new Date());
+
+        // 비번 암호화해야되요, birth는 반드시 yyyy-mm-dd 이런형식으로 추가해줘야함.
+        // 이메일 인증! 추후 mailgun 활용해보자!
+        db.query(
+          `INSERT INTO user (id, login_id, password, nickname, email, gender, birth, created_at, updated_at, fan_team, profile_image)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+          [
+            shortid.generate(),
+            user_id,
+            pwd1,
+            nickname,
+            email,
+            gender,
+            birth,
+            current_time,
+            current_time,
+            fan_team,
+            "none",
+          ],
+          function (error, result) {
+            if (error) throw error;
+            console.log("성공?");
+            res.send("회원가입 성공!");
+            return;
+          }
+        );
       }
-    }
-  );
-
-  // Date 객체를 MySQL DATETIME 형식으로 변환하는 함수
-  function formatDateToMySQL(datetime) {
-    const year = datetime.getFullYear();
-    const month = ("0" + (datetime.getMonth() + 1)).slice(-2);
-    const day = ("0" + datetime.getDate()).slice(-2);
-    const hours = ("0" + datetime.getHours()).slice(-2);
-    const minutes = ("0" + datetime.getMinutes()).slice(-2);
-    const seconds = ("0" + datetime.getSeconds()).slice(-2);
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
-
-  const current_time = formatDateToMySQL(new Date());
-
-  // 비번 암호화해야되요, birth는 반드시 yyyy-mm-dd 이런형식으로 추가해줘야함.
-  // 이메일 인증! 추후 mailgun 활용해보자!
-  db.query(
-    `INSERT INTO user (id, login_id, password, nickname, email, gender, birth, created_at, updated_at, fan_team, profile_image)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-    [
-      shortid.generate(),
-      user_id,
-      pwd1,
-      nickname,
-      email,
-      gender,
-      birth,
-      current_time,
-      current_time,
-      fan_team,
-      "none",
-    ],
-    function (error, result) {
-      if (error) throw error;
-      res.send("회원가입 성공!");
     }
   );
 });
@@ -395,10 +403,10 @@ app.post("/check_user_id", (req, res) => {
       if (error) throw error;
       if (result.length > 0) {
         console.log("중복된 아이디");
-        res.send("중복된 아이디입니다.");
+        res.send({ msg: "중복된 아이디입니다." });
       } else {
         console.log("사용 가능한 아이디");
-        res.send("사용 가능한 아이디입니다.");
+        res.send({ msg: "사용 가능한 아이디입니다." });
       }
     }
   );
