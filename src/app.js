@@ -66,9 +66,10 @@ passport.use(
         if (error) {
           throw error;
         }
-        if (username === user.login_id) {
+        console.log(user[0].login_id);
+        if (username === user[0].login_id) {
           console.log(1);
-          if (password === user.password) {
+          if (password === user[0].password) {
             console.log(2);
             return done(null, user[0]);
           } else {
@@ -364,7 +365,7 @@ app.post("/signup_process", (req, res) => {
       } else {
         const current_time = formatDateToMySQL(new Date());
 
-        // 비번 암호화해야되요, birth는 반드시 yyyy-mm-dd 이런형식으로 추가해줘야함.
+        // 비번 암호화해야되요
         // 이메일 인증! 추후 mailgun 활용해보자!
         db.query(
           `INSERT INTO user (id, login_id, password, nickname, email, gender, birth, created_at, updated_at, fan_team, profile_image)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
@@ -414,16 +415,22 @@ app.post("/check_user_id", (req, res) => {
 
 app.get("/login", (req, res) => {});
 
-app.post(
-  "/login_process",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/",
-  }),
-  (req, res) => {
-    res.send("login logic!");
-  }
-);
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", function (err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.status(401).json({ message: info.message });
+    }
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err);
+      }
+      return res.status(200).json({ message: "Login successful", user });
+    });
+  })(req, res, next);
+});
 
 app.listen(port, function () {
   console.log(`App is listening on port ${port} !`);
