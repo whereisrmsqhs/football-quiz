@@ -19,9 +19,11 @@ const corsOption = {
   origin: ["http://localhost:3000"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 };
 
 app.use(cors(corsOption));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -29,8 +31,13 @@ app.use(
   session({
     secret: "asadlfkj!@#!@#dfgasdg",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: new FileStore(),
+    cookie: {
+      httpOnly: true,
+      secure: false, // HTTPS를 사용하는 경우 true로 설정
+      maxAge: 1000 * 60 * 60 * 24, // 쿠키 만료 시간 설정 (예: 1일)
+    },
   })
 );
 
@@ -46,11 +53,12 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  db.get("SELECT * FROM user WHERE id = ?", [id], function (err, user) {
+  console.log("deserializeUser", id);
+  db.query("SELECT * FROM user WHERE id=?", [id], function (err, user) {
     if (err) {
       return done(err);
     }
-    return done(null, user[0]);
+    return done(null, user);
   });
 });
 
@@ -62,29 +70,32 @@ passport.use(
     },
     function (username, password, done) {
       console.log("Localstorage", username, password);
-      db.query(`SELECT * from user`, function (error, user) {
-        if (error) {
-          throw error;
-        }
-        console.log(user[0].login_id);
-        if (username === user[0].login_id) {
-          console.log(1);
-          if (password === user[0].password) {
-            console.log(2);
-            return done(null, user[0]);
+      db.query(
+        `SELECT * from user WHERE login_id=?`,
+        [username],
+        function (error, user) {
+          if (error) {
+            throw error;
+          }
+          if (username === user[0].login_id) {
+            console.log(1);
+            if (password === user[0].password) {
+              console.log(2);
+              return done(null, user[0]);
+            } else {
+              console.log(3);
+              return done(null, false, {
+                message: "Incorrect Password",
+              });
+            }
           } else {
-            console.log(3);
+            console.log(4);
             return done(null, false, {
-              message: "Incorrect Password",
+              message: "Incorrect username",
             });
           }
-        } else {
-          console.log(4);
-          return done(null, false, {
-            message: "Incorrect username",
-          });
         }
-      });
+      );
     }
   )
 );
@@ -127,6 +138,14 @@ function formatDateToMySQL(datetime) {
   const seconds = ("0" + datetime.getSeconds()).slice(-2);
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
+
+// 정적 파일을 서빙
+app.use(express.static(path.join(__dirname, "build")));
+
+// 루트 경로 처리
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 app.get("/quiz", (req, res) => {
   db.query(`SELECT * from quiz_collection`, function (error, quiz_collection) {
@@ -413,23 +432,31 @@ app.post("/check_user_id", (req, res) => {
   );
 });
 
-app.get("/login", (req, res) => {});
-
 app.post("/login", (req, res, next) => {
-  passport.authenticate("local", function (err, user, info) {
-    if (err) {
-      return next(err);
-    }
-    if (!user) {
-      return res.status(401).json({ message: info.message });
-    }
-    req.logIn(user, function (err) {
+  console.log("뭐여");
+  passport.authenticate(
+    "local",
+    {
+      session: false,
+    },
+    (err, user, info) => {
       if (err) {
+        console.log(err);
         return next(err);
       }
-      return res.status(200).json({ message: "Login successful", user });
-    });
-  })(req, res, next);
+      if (info) {
+        return res.status(401).send(info.message);
+      }
+      return req.login(user, { session: true }, (loginErr) => {
+        if (loginErr) return next(loginErr);
+
+        const filteredUser = { ...user };
+        console.log("지나감");
+        delete filteredUser.password;
+        return res.json(filteredUser);
+      });
+    }
+  )(req, res, next);
 });
 
 app.listen(port, function () {

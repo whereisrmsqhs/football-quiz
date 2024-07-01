@@ -1,35 +1,43 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+
+  const [userid, setUserid] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleId = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserid(event.target.value);
+  };
+
+  const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    try {
-      const form = event.target as HTMLFormElement;
-      const formData = new FormData(form);
-      const username = formData.get("username");
-      const password = formData.get("password");
+    console.log(userid);
 
-      const response = await fetch("http://localhost:3001/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
-      const data = await response.json();
+    const response = await fetch("http://localhost:3001/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: userid, password: password }),
+      credentials: "include",
+    });
 
-      if (response.ok) {
-        console.log(data.message);
-        navigate("/");
-      } else {
-        console.log(data.message);
-      }
-    } catch (error) {
-      console.log("Error:", error);
-    }
+    const data = await response.json();
+
+    console.log(data);
+    alert("로그인 성공!");
+
+    navigate("/");
   };
+
+  console.log(userid);
 
   return (
     <>
@@ -37,7 +45,14 @@ const Login: React.FC = () => {
       <form onSubmit={handleLogin} method="post">
         <section>
           <label htmlFor="username">아이디</label>
-          <input id="username" name="username" type="text" required />
+          <input
+            id="username"
+            name="username"
+            type="text"
+            value={userid}
+            onChange={handleId}
+            required
+          />
         </section>
         <section>
           <label htmlFor="current-password">비밀번호</label>
@@ -45,6 +60,8 @@ const Login: React.FC = () => {
             id="current-password"
             name="password"
             type="password"
+            value={password}
+            onChange={handlePassword}
             required
           />
         </section>
