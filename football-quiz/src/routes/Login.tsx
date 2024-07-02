@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const [userid, setUserid] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useAuth();
 
   const handleId = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserid(event.target.value);
@@ -33,6 +35,7 @@ const Login: React.FC = () => {
 
     console.log(data);
     alert("로그인 성공!");
+    login();
 
     navigate("/");
   };

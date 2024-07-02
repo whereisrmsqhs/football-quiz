@@ -145,6 +145,7 @@ app.use(express.static(path.join(__dirname, "build")));
 // 루트 경로 처리
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
+  console.log(req.user);
 });
 
 app.get("/quiz", (req, res) => {

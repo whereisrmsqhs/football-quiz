@@ -9,12 +9,16 @@ import {
 import { Link } from "react-router-dom";
 import "../css/header.scss";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const Header: React.FC = () => {
   const [toggleBtn, settoggleBtn] = useState(false);
+  const { isLoggedIn } = useAuth();
+
   const onToggleClick = () => {
     settoggleBtn(!toggleBtn);
   };
+
   return (
     <div>
       <nav className="navbar">
@@ -40,6 +44,7 @@ const Header: React.FC = () => {
             <li>문의</li>
           </Link>
         </ul>
+        {isLoggedIn ? <div>로그아웃</div> : <div>로그인</div>}
         <ul className={toggleBtn ? "navbar__icon active" : "navbar__icon"}>
           <FontAwesomeIcon icon={faGithub as IconProp} />
           <FontAwesomeIcon icon={faLandmark as IconProp} />

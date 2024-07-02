@@ -10,23 +10,26 @@ import CreateQuiz from "./routes/CreateQuiz";
 import EachSolve from "./routes/EachSolve";
 import Login from "./routes/Login";
 import Signup from "./routes/Signup";
+import { AuthProvider } from "./context/AuthContext";
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/quiz" element={<Quiz />}></Route>
-        <Route path="/quiz/:quizId" element={<QuizSolve />}>
-          <Route path="solve" element={<EachSolve />} />
-        </Route>
-        <Route path="/quiz/post" element={<CreateQuiz />}></Route>
-        <Route path="/community" element={<Community />}></Route>
-        <Route path="/contact" element={<Contact />}></Route>
-        <Route path="/signup" element={<Signup />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-      </Routes>
+      <AuthProvider>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/quiz" element={<Quiz />}></Route>
+          <Route path="/quiz/:quizId" element={<QuizSolve />}>
+            <Route path="solve" element={<EachSolve />} />
+          </Route>
+          <Route path="/quiz/post" element={<CreateQuiz />}></Route>
+          <Route path="/community" element={<Community />}></Route>
+          <Route path="/contact" element={<Contact />}></Route>
+          <Route path="/signup" element={<Signup />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 };
